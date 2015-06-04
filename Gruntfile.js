@@ -10,19 +10,6 @@ module.exports = function(grunt) {
         },
         files: {
           'prod/jquery.plug.min.js':   'dev/jquery.plug.js',
-          'prod/jquery.latest.min.js': 'dev/jquery.latest.js',
-          'page/jquery.plug.min.js':   'dev/jquery.plug.js',
-          'page/jquery.latest.min.js': 'dev/jquery.latest.js',
-        },
-      }
-    },
-    stylus: {
-      compile: {
-        options: {
-          sourceMap: true
-        },
-        files: {
-          'page/style.css': 'dev/styles.styl'
         },
       }
     },
@@ -36,14 +23,8 @@ module.exports = function(grunt) {
         tasks: ['uglify'],
         options: {reload: true }
       },
-      styl: {
-        files: ['dev/**/*.styl'],
-        tasks: ['stylus'],
-        options: {reload: true }
-      }
     }
   });
-  grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
