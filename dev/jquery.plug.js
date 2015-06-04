@@ -1,5 +1,5 @@
 $.plug = function(proto,name,fn) {
-   // function to add the prototype as a jquery plugin
+  // function to add the prototype as a jquery plugin
   this.play =  function(proto,plugin) {
     var pluginname = (proto)?proto+'__'+plugin.prototype.name:plugin.prototype.name;
     $.fn[pluginname] = function(name,opts) {
