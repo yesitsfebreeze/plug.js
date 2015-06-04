@@ -1,6 +1,6 @@
 animspeed = .5s 
 snap      = cubic-bezier(.2,1,.5,1)
-accent    = #F92772
+accent    = #2C86C4
 fontcolor = #333
 bodybg    = #F4F3F1
 
@@ -29,71 +29,75 @@ animate(name)
 body
   background  bodybg
   font-family 'Roboto', sans-serif
-  text-align  center
   color       fontcolor
+*
+  box-sizing border-box
+hr 
+  border-color accent
+  border-style solid
+  border-width 2px
+  width 20%
+  margin 10px 0
+  margin-bottom 40px
 
-nav
-  padding-bottom 30px
-  .navis
-    width 50%
-    float left
-    &.prev
-      text-align left
-      .fa
-        padding-right 10px
-    &.next
-      text-align right
-      .fa
-        padding-left 10px
+main
+  width 60%
+  margin 0 auto
 
 header,#head
   margin-bottom 60px
+  h1,h3
+    width       50%
+    display     inline-block
+    float       left
+    line-height 50px
+  h3
+    text-align right
+h2
+  margin-top    60px
+
+.clear
+  &:after
+    content    ''
+    clear      both
+    display    block
+    visibility hidden
+    height     0px
+
 
 a
   color           fontcolor
   text-decoration none
   position        relative
-  padding         10px 15px
   transition(all)
   &:hover,&:active,&:focus,&.active
     color accent
   &.big
-    color           accent
-    &:after
-      content       ''
-      position      absolute
-      left          0
-      top           0
-      width         100%
-      height        100%
-      border-bottom 3px solid transparent
-      transition(all)
-      transform(scale(.2))
+    color accent
     &:hover,&:active,&:focus,&.active
-      &:after
-        border-color accent
-        transform(scale(1))
+      color fontcolor
 
+p
+  width      50%
+  text-align justify
 em
   color         accent
   font-style    unset
+
 pre
-  p
-    position    relative
-    left        25%
-    width       50%
-    text-align  left
-    padding     0
-    margin      0
-    font-family 'Roboto', sans-serif
-  code 
-    width            50%
-    position         relative
-    display          block
-    text-align       left
-    left             25%
-    background-color darken(bodybg,5%)
-    padding          20px
+  display          block
+  white-space      pre-wrap
+  word-break       break-all
+  word-wrap        break-word
+  border-radius    4px
+  width            100%
+  position         relative
+  display          block
+  text-align       left
+  background-color darken(bodybg,5%)
+  padding          20px
+  overflow         auto
+
 
 @keyframes log
   from

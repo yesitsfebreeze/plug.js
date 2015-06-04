@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="">
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -8,76 +8,112 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="style.css">
+        <script src="hyphenator.min.js"></script>
+        <script src="jquery.latest.min.js"></script>
+        <script src="jquery.plug.min.js"></script>
+        <script type="text/javascript">
+            Hyphenator.config({
+                displaytogglebox : true,
+                minwordlength : 4
+            });
+            Hyphenator.run();
+        </script>
+        </script>
     </head>
     <body>
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <nav>
-            <div class="navis prev">
-                <i class="fa fa-arrow-left"></i>
-
-            </div>
-            <div class="navis next">
-                <a href="test.html">
-                    assigning methods
-                    <i class="fa fa-arrow-right"></i>
-                </a>
-            </div>
-        </nav>
-            
-        </div>
+        <main>
         <div id="head">
             <header>
                 <h1><a class="big" target="_blank" href="https://github.com/hvlmnns/jquery.plug">plug.js</a></h1>
                 <h3><a target="_blank" href="https://github.com/hvlmnns/jquery.plug/archive/master.zip">grab it! <i class="fa fa-download"></i> </a></h3>
             </header>
-            <h4>#1 creating a plugin</h4>
-            <div id="logger"></div>            
         </div>
-        <pre>
-            <p>this is how you make a new plugin, simple huh?</p>
-            <code>
-$.plug('newPlugin');
-            </code>
-        </pre>
-        <pre>
-            <p>to access its prototype you can use</p>
-            <code>
-$.sockets.newPlugin
-            </code>
-        </pre>
-
-        <pre>
-            <p>as of now the plugin has no funtionality, lets add a simple log</p>
-            <code>
-$.plug('newPlugin','simpellog',{
-  init: function () {
-    var meth = this.name
-    setTimeout(function () {
-      log('Plugin method '&ltem&gt;'+meth+''&lt/em&gt; has been executed')  
-    },500)
-  }
-});
-            </code>
-        </pre>
-
-        <pre>
-            <p>how you call it</p>
-            <code>
-$(function () {
-    $('body').newPlugin('simpellog');
-})
-            </code>
-        </pre>
-
-
-
+        <div class="clear"></div>
+        <h2>
+            Introduction
+            <hr>
+        </h2>
+            <p class="hyphenate">
+                Plug is a function to create jQuery plugin prototypes on the fly. 
+                Once you’ve created a plugin, you have global access to it. <br><br> 
+                That means you can use Methods of one Plugin in an entirely different one. 
+                That leads to less code and better usabilitye of scopes. 
+                For having an overview of the used plugins, you can access them in a global library.
+                For any further information please visit:
+                <a href="http://hvlmnns.github.io/jquery.plug/">http://hvlmnns.github.io/jquery.plug/</a>
+            </p>
+        <h2>
+            Plugins
+            <hr>
+        </h2>
+        <p class="hyphenate">
+            Each plugin consists of three elements: 
+            <ul>
+                <li>name</li>
+                <li>methods</li>
+                <li>options</li>
+            </ul>
+            All those elements can be updated along the process.
         </p>
-        <footer>
-          <script src="jquery.latest.min.js"></script>
-          <script src="jquery.plug.min.js"></script>
-          <script src="creating.js"></script>
-        </footer>
+        <h4>Now Lets create a new plugin.</h4>
+<!--  -->
+<pre>
+$.plug('newPlugin');
+</pre>
+<script>
+
+</script>
+<!--  -->
+    <p class="hyphenate">
+        Okay, now we have created a new plugin with the name "newPlugin" in our plugin library. This library can be accessed via:
+    </p>
+<!--  -->
+<pre>
+$.sockets
+</pre>
+<!--  -->
+        <p class="hyphenate">
+            The plugin is not doing anything by now.
+            If you execut it on an object like this, it will inform you that the init method is misssing.
+        </p>
+<pre>
+$('#element').newPlugin()
+</pre>
+        <h2>
+            Methods
+            <hr>
+        </h2>
+        <p class="hyphenate">
+            Since we have a plugin now, we should take a look on how to create methods.
+        </p>
+        <p class="hyphenate">
+            The default method is <em>init</em>.
+            When no method parameter is passed to the call, <em>init</em> gets called. <br>
+            Since plug.js cant write code for you, you still have to define it yourself.
+        </p>
+<pre>
+$.plug('newPlugin','init',{
+    init: function(){
+
+    }
+});
+</pre>
+        <p class="hyphenate">
+            Each method will be be a default jquery plugin later.
+            This ensures that we can use the methods on a global scope.
+        </p>
+<pre>
+$.fn.newPlugin.method()
+</pre>
+        <p class="hyphenate">
+            The actual creating syntax is pretty straight forward.
+        </p>
+        </main>
     </body>
+    <footer>
+        <script src="page.min.js"></script>
+    </footer>
 </html>
