@@ -1,5 +1,5 @@
 $.plug = function(proto,name,fn) {
-   // function to add the prototype as a jquery plugin
+  // function to add the prototype as a jquery plugin
   this.play =  function(proto,plugin) {
     var pluginname = (proto)?proto+'__'+plugin.prototype.name:plugin.prototype.name;
     $.fn[pluginname] = function(name,opts) {
@@ -63,10 +63,12 @@ $.plug = function(proto,name,fn) {
 
   // copy init function from the global plugin
   $.sockets[proto][name] = function (e) {
-    if (e.opts){
-        var opts        = e.opts[proto+'__'+name];
-        this.opts       = (opts)?opts:{};
+    if (this.defaults && e.opts){
+      var opts = $.extend({},this.defaults,e.opts[proto+'__'+name])
+    } else if (!this.defaults && e.opts){
+      var opts        = e.opts[proto+'__'+name];
     }
+    this.opts       = opts || {};
     this.plugName = proto;
     this.el         = $(e);
     this.init()
