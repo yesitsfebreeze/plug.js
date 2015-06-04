@@ -11,6 +11,8 @@ module.exports = function(grunt) {
         files: {
           'prod/jquery.plug.min.js':   'dev/jquery.plug.js',
           'prod/jquery.latest.min.js': 'dev/jquery.latest.js',
+          'page/jquery.plug.min.js':   'dev/jquery.plug.js',
+          'page/jquery.latest.min.js': 'dev/jquery.latest.js',
         },
       }
     },
@@ -20,7 +22,7 @@ module.exports = function(grunt) {
           sourceMap: true
         },
         files: {
-          'examples/style.css': 'dev/styles.styl'
+          'page/style.css': 'dev/styles.styl'
         },
       }
     },
