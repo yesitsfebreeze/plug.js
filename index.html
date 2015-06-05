@@ -7,28 +7,33 @@
         <meta name="description" content="basic plug example">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/github.min.css">
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
         <link rel="stylesheet" href="style.css">
         <script src="hyphenator.min.js"></script>
         <script src="jquery.latest.min.js"></script>
         <script src="jquery.plug.min.js"></script>
         <script type="text/javascript">
             Hyphenator.config({
-                displaytogglebox : true,
                 minwordlength : 4
             });
             Hyphenator.run();
         </script>
         </script>
     </head>
-    <body>
+    <body data-newplugin-log="test">
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <main>
+        <div class="links">
+          <h3><a target="_blank" href="https://github.com/hvlmnns/jquery.plug/archive/master.zip">download <i class="fa fa-download"></i> </a></h3>
+          <h3><a target="_blank" href="https://github.com/hvlmnns/jquery.plug/">gitHub <i class="fa fa-github"></i> </a></h3>
+        </div>
         <div id="head">
             <header>
                 <h1><a class="big" target="_blank" href="https://github.com/hvlmnns/jquery.plug">plug.js</a></h1>
-                <h3><a target="_blank" href="https://github.com/hvlmnns/jquery.plug/archive/master.zip">grab it! <i class="fa fa-download"></i> </a></h3>
             </header>
         </div>
         <div class="clear"></div>
@@ -36,84 +41,216 @@
             Introduction
             <hr>
         </h2>
+        <div class="content">
             <p class="hyphenate">
                 Plug is a function to create jQuery plugin prototypes on the fly. 
-                Once you’ve created a plugin, you have global access to it. <br><br> 
+                And the best thing is, once you’ve created a plugin, you'll have global access to it and it's methods.
+                <br><br>
                 That means you can use Methods of one Plugin in an entirely different one. 
                 That leads to less code and better usabilitye of scopes. 
-                For having an overview of the used plugins, you can access them in a global library.
-                For any further information please visit:
-                <a href="http://hvlmnns.github.io/jquery.plug/">http://hvlmnns.github.io/jquery.plug/</a>
+                For an overview you can access them in a library.
+
+                <h4>List of Contents:</h4>
+                <ul>
+                    <li><a href="#Plugins">Plugins</a></li>
+                    <li><a href="#Methods">Methods</a></li>
+                    <li><a href="#Overwriting">Overwriting</a></li>
+                    <li><a href="#Usage">Usage</a></li>
+                    <li><a href="#Advanced">Advanced features</a></li>
+                </ul>
             </p>
+        </div>
         <h2>
+            <a name="Plugins"></a>
             Plugins
             <hr>
         </h2>
+        <div class="content">
         <p class="hyphenate">
             Each plugin consists of three elements: 
             <ul>
                 <li>name</li>
-                <li>methods</li>
                 <li>options</li>
+                <li>methods</li>
             </ul>
-            All those elements can be updated along the process.
         </p>
-        <h4>Now Lets create a new plugin.</h4>
-<!--  -->
-<pre>
-$.plug('newPlugin');
-</pre>
-<script>
+        <br><br>
+        <h4>Basic plugin syntax.</h4>
+        <strong><em>Note: The following code is executed, so dont forget to check the console.</em></strong>
+        <div class="yourElement"></div>
+<pre><code class="js">
+$.plug('play',{ // plugin name
+  defaults: {
+      option: 'this is the default option'
+  },
+  init: function () { // first function that gets called
+    this.el,  // javascript object
+    this.$el, // jQuery object
+    this.opts // options merged from defaults, passed options and data attributes
 
-</script>
-<!--  -->
-    <p class="hyphenate">
-        Okay, now we have created a new plugin with the name "newPlugin" in our plugin library. This library can be accessed via:
-    </p>
-<!--  -->
-<pre>
-$.sockets
-</pre>
-<!--  -->
-        <p class="hyphenate">
-            The plugin is not doing anything by now.
-            If you execut it on an object like this, it will inform you that the init method is misssing.
-        </p>
-<pre>
-$('#element').newPlugin()
-</pre>
-        <h2>
-            Methods
-            <hr>
-        </h2>
-        <p class="hyphenate">
-            Since we have a plugin now, we should take a look on how to create methods.
-        </p>
-        <p class="hyphenate">
-            The default method is <em>init</em>.
-            When no method parameter is passed to the call, <em>init</em> gets called. <br>
-            Since plug.js cant write code for you, you still have to define it yourself.
-        </p>
-<pre>
-$.plug('newPlugin','init',{
-    init: function(){
-
-    }
+    this.method(); // calling a method
+  },
+  method: function (el,$el,options) { // custom method
+    console.log('play.method has been called')
+    console.log(this.opts.option)
+    console.log('\n')
+  }
 });
-</pre>
-        <p class="hyphenate">
-            Each method will be be a default jquery plugin later.
-            This ensures that we can use the methods on a global scope.
-        </p>
-<pre>
-$.fn.newPlugin.method()
-</pre>
-        <p class="hyphenate">
-            The actual creating syntax is pretty straight forward.
-        </p>
-        </main>
-    </body>
-    <footer>
-        <script src="page.min.js"></script>
-    </footer>
-</html>
+<script>
+  $.plug('play',{ // plugin name
+    defaults: {
+        option: 'this is the default option'
+    },
+    init: function () { // first function that gets called
+      this.el,  // javascript object
+      this.$el, // jQuery object
+      this.opts // options merged from defaults, passed options and data attributes
+      console.log('init call on "'+this.el.className+'"')
+
+      this.method(); // calling a method
+
+    },
+    method: function (el,$el,options) { // custom method
+      console.log('play.method call on "'+this.el.className+'"')
+      console.log(this.opts.option)
+      console.log('\n')
+    }
+  });
+</script>
+</code></pre>
+<br><br>
+<h4>Calling the plugin</h4>
+<p class="hyphenate">We can call the plugin in different ways:</p>
+<br>
+<p class="hyphenate">This is a basic plugin call without any options. <br>It will invoke the <em>init</em> function and nothing more.</p>
+<pre><code class="js">
+$(function () {
+  // will call init and then play.method
+  // output will be the logs from play.method
+  $('.yourElement').play();
+})
+</code></pre>
+<br>
+<p class="hyphenate">In this example we've overwritten the defaults:</p>
+<pre><code class="js">
+$(function () {
+  // passing options which will overwrite the defaults if set
+  $('.yourElement').play({
+    option: 'overwriting defaults'
+  });
+})
+</code></pre>
+<br>
+<p class="hyphenate">Here we added a callback:</p>
+<pre><code class="js">
+$(function () {
+  // if first attribute is a function it will get executed after everything else is finished
+  $('.yourElement').play(function(){
+    console.log('this is a callback')
+    console.log('\n')
+  });
+})
+</code></pre>
+<br>
+<p class="hyphenate">Mixing callbacks and default overwrites:</p>
+<pre><code class="js">
+$(function () {
+  // mixing options overwrite and callbacks
+  $('.yourElement').play({
+    option: 'overwriting defaults and callbacks'
+  },function(){
+    console.log('this just another callback')
+    console.log('\n')
+  });
+
+})
+</code></pre>
+<br>
+<p class="hyphenate">For better usability there as another option to overwriting the defaults. All data attributes with a specific syntax will do this:</p>
+<pre><code class="js">
+$(function () {
+
+  // lets set a data attribute since they can also overwrite the defaults 
+  $('.yourElement').attr('data-play-option','data attribute overwrite');
+  // Note: The syntax for this is data-pluginname-optionname
+
+  $('.yourElement').play();  
+
+})
+</code></pre>
+
+<script>
+$(function () {
+  
+  // will call init and then play.method
+  // output will be the logs from play.method
+  $('.yourElement').play();
+
+  // passing options which will overwrite the defaults if set
+  $('.yourElement').play({
+    option: 'overwriting defaults'
+  });
+
+  // if first attribute is a function it will get executed after everything else is finished
+  $('.yourElement').play(function(){
+    console.log('this is a callback')
+    console.log('\n')
+  });
+
+  // mixing options overwrite and callbacks
+  $('.yourElement').play({
+    option: 'overwriting defaults and callbacks'
+  },function(){
+    console.log('this just another callback')
+    console.log('\n')
+  });
+
+
+  // lets set a data attribute since they can also overwrite the defaults 
+  $('.yourElement').attr('data-play-option','data attribute overwrite');
+  // Note: The syntax for this is data-pluginname-optionname
+
+  $('.yourElement').play();  
+
+})
+</script>
+</div>
+<h2>
+  <a name="Methods"></a>
+  Methods
+  <hr>
+</h2>
+<div class="yourSecondElement"></div>
+<div class="content">
+  <p class="hyphenate">Methods are the children of a plugin.<br>The great thing about them is, that you can call them seperatly on new elements. Lets see how we do this.</p>
+  <br>
+  <p class="hyphenate">For better usability there as another option to overwriting the defaults. All data attributes with a specific syntax will do this:</p>
+  <pre><code class="js">
+  $(function () {
+
+    // lets set a data attribute since they can also overwrite the defaults 
+    $('.yourElement').attr('data-play-option','data attribute overwrite');
+    // Note: The syntax for this is data-pluginname-optionname
+
+    $('.yourElement').play();  
+
+  })
+  </code></pre>
+  <script>
+    $(function () {
+      // if the first argument is the name of a valid method of play it will execute it
+      $('.yourSecondElement').play('method')
+
+      // You can pass the same arguments on a method which you can on its plugin
+      $('.yourSecondElement').play('method',{
+        otpion: 'method option overwrite'
+      },function(){
+        console.log('method callback')
+      })
+    })
+  </script>
+</div>
+
+
+<!-- content end -->
+</body></html>

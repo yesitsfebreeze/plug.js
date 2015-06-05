@@ -11,7 +11,7 @@ module.exports = function(grunt) {
         files: {
           'jquery.plug.min.js':   'dev/jquery.plug.js',
           'jquery.latest.min.js': 'dev/jquery.latest.js',
-          'hyphenator.min.js': 'dev/hyphenator.js',
+          // 'hyphenator.min.js': 'dev/hyphenator.js',
           'page.min.js': 'dev/page.js',
         },
       }

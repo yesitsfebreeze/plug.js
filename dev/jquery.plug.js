@@ -1,107 +1,107 @@
-var jqsrc = 'http://code.jquery.com/jquery-1.11.3.min.js';
+// callback !!
+;(function ($) { 'use strict';
 
-// check if jQuery is available
-if (typeof jQuery == 'undefined') {
-  console.warn('You need to load jQuery in order to run Plug.js')
-  console.warn('Here is a stable source for you:')
-  console.log(jqsrc)
-}else{
-  // if so run plug.js
+  $.plug = function(name,functions) {
+    var name,functions;
 
-  ;(function ($) { 'use strict';
-
-    $.plug = function(proto,name,fn) {
-      // function to add the prototype as a jquery plugin
-      this.play =  function(proto,plugin) {
-        console.log(this)
-        var fnc = function(el,opts) {
-            var o = opts;
-            return this.each(function() {
-                // pass options to element
-                if (o) {
-                  this.opts = this.opts || {};
-                  this.opts[pluginname] = o;
-                }
-                // create plugin
-                new plugin(this, name , (o)?o:false);
-            });
-        };
-        if(proto) {
-          $.fn[proto][plugin.prototype.name] = fnc;
-        } else {
-          $.fn[plugin.prototype.name] = fnc;
-        }
-      };
-
-      // function to create the first global prototype
-      this.socket = function(proto) {
-
-        // create plugin container if not already existing
-        $.sockets = $.sockets || {} ;
-
-        // check if plugin already exists
-        if ('object' == typeof $.sockets[proto]) return false;
-
-        // create init function to call the global plugin
-        $.sockets[proto] = $.sockets[proto] || {};
-        $.sockets[proto] = function(el,meth,opts) {
-            // if method exists; execute it else execute init
-            (meth) ? this.__execute(el,meth,opts) : this.__execute(el,false,opts);
-        };
-
-        // define the base prototype
-        $.extend($.sockets[proto].prototype, {  
-          name: proto,
-          parent: $.sockets,
-          __execute: function(el,meth,opts) {
-            if (meth) {
-              return $(el)[proto][meth](el,opts);
-            } else {
-              // fire init function if no method is defined
-              init = proto+'__init';
-              if (!$.fn[init])  return console.info('Please provide a init method for the '+proto+' plugin.');
-              return $(el)[init](el,opts);
-            }
-          }
-        })  
-
-        this.play(false,$.sockets[proto]);
-      }
-
-      // run plugin function to make sure the plugin exist
-      // gets cancled if it already exists
-      this.socket(proto);
-
-      // dont continue if only prototype should be created
-      if (!name && !fn) return;
-
-      // inform the user if name is not set
-      if (!name || 'string' !== typeof name ) return console.info('Please provide a method name for the '+proto+' plugin.');
-
-      // copy init function from the global plugin
-      $.sockets[proto][name] = function (e) {
-        if (this.defaults && e.opts){
-          var opts = $.extend({},this.defaults,e.opts[proto+'__'+name])
-        } else if (!this.defaults && e.opts){
-          var opts        = e.opts[proto+'__'+name];
-        }
-        this.opts       = opts || {};
-        this.plugName = proto;
-        this.el         = $(e);
-        this.init()
-      };
-
-      // extend the prototype with passed functions
-      $.extend($.sockets[proto][name].prototype, {
-        name: name,
-        parent: $.sockets[proto],
-        init: function() {
-          // inform the user that the init function has not changed
-          console.info('Init function for the '+proto+' '+name+' method has not been set. Plugin may not behave as desired.')
-        }
-      },fn) // passed funtions
-
-      this.play(proto,$.sockets[proto][name]);
+    // main plug function
+    var plug = function() {
+      if(name) plug.proto();
     }
-  })(jQuery);
-};
+
+    // create protoype for the plugin
+    plug.proto = function() {
+      plug.fn(); // make function
+      $.plug[name].prototype = {
+        name: name,
+        init: function() {
+          console.error('Missing Init:','Plugin ('+name+') has no (init) function.')
+          return false;
+        }
+      }
+      $.extend($.plug[name].prototype,functions)
+      $.plug[name].defaults = $.plug[name].prototype.defaults;
+      plug.register();
+    }
+
+    // create base function
+    plug.fn = function() {
+      $.plug[name] = function(el, opts, callback) {
+        this.el = el;
+        this.$el = $(el);
+        var inlinedata = plug.inlinedata(this.defaults,this.$el);
+        this.opts = $.extend({}, this.defaults, opts, inlinedata);
+      };
+    }
+    
+    // register plugin in jquery library
+    plug.register = function () {
+
+      plug.registersubs();
+
+      $.fn[name] = function(opts, callback, fallback) {
+        if ('string' == typeof opts) {
+          this.each(function() {
+            $(this)[name+'_____'+opts](this,callback,fallback);
+          });
+          return this
+        } else {
+          this.each(function() {
+            new $.plug[name](this, opts, callback).init();
+            return plug.callback([opts,callback],this);
+          });
+          return this
+        }
+      };
+    }
+
+    // register plugin methods in jquery library
+    plug.registersubs = function () {
+      var temp = $.plug[name].prototype;
+      for(var fn in temp){
+        if ('function' == typeof temp[fn]) {
+          $.fn[name+'_____'+fn] =  function (el,opts, callback) {
+            new $.plug[name](el, opts, callback)[fn]();
+            return plug.callback([opts,callback],el);
+          }
+        }
+      }
+      temp = void 0;
+    }
+
+    // returning inline data attributs as object
+    plug.inlinedata = function(defaults,obj) {
+      var data = {};
+      for(var option in defaults){
+        data[option] = obj.data(name.toLowerCase()+'-'+option)
+      }
+      return data;
+    }
+
+    plug.callback = function(callback,el) {
+      for(var n in callback) {
+        if ('function' == typeof callback[n]) { 
+          (function(el) {
+            this[name+'___callback'] = callback[n];
+            this[name+'___callback']();
+            delete this[name+'___callback'];
+          }).call(el);
+        }
+      }
+    }
+    // override funtion
+    $.plug.override = function (name,method,override) {
+      if('undefined' == typeof $.plug[name].prototype[method]){
+        console.error('Override Error:','Plugin ('+name+') has no ('+method+') function.');
+        return false;
+      }
+      if (!$.plug[name].prototype[method].call()) return false;
+      return $.plug[name].prototype[method] = override;
+    }
+
+    // execute plug
+    plug();
+
+  };
+
+})(jQuery);
