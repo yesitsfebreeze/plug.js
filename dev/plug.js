@@ -1,5 +1,3 @@
-// dependencies !!
-
 ;(function ($) { 'use strict';
   $.pluglib = {}; // register library
   $.plug = function(name,functions) {
@@ -52,6 +50,7 @@
           return this
         }
       };
+      // register plugin in plug library
       $.pluglib[name] = $.plug[name].prototype;
     }
 

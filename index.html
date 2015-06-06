@@ -28,8 +28,8 @@
         <hr/></h2>
       <div class="content">
         <p class="hyphenate">
-          <em>Plug.js</em> is a function to create jQuery plugin prototypes on the fly. 
-          And the best thing is, once you’ve created a plugin, you'll have global access to it and its methods.<br><br>That means you can use the <em>methods</em> of a <em>plugin</em> on completly different objects or plugins, 
+          Plug.js is a function to create jQuery plugin prototypes on the fly. 
+          And the best thing is, once you’ve created a plugin, you'll have global access to it and its methods.<br><br>That means you can use the methods of a plugin on completly different objects or plugins, 
           which leads to less code and great readability. 
         </p>
         <h3>Table of Contents:</h3>
@@ -37,6 +37,7 @@
           <li><a href="#Plugins">Plugins</a></li>
           <li><a href="#Methods">Methods</a></li>
           <li><a href="#Modifying">Modifying</a></li>
+          <li><a href="#Advanced">Advanced</a></li>
         </ul>
       </div><a name="Plugins"></a>
       <h2>Plugins
@@ -51,7 +52,7 @@
         </p><br><br>
         <p class="hyphenate"><strong><em>Note: click execute to see the code in action.</em></strong><br></p>
         <h3>Basic plugin syntax.</h3>
-        <div data-run="pluginsyntax" class="run">
+        <div data-run="syntax" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">$.plug('play',{ // plugin name
@@ -77,7 +78,7 @@
 });
 
 logger('created plugin "play"');</code></pre>
-        <script>coderunner["pluginsyntax"] = function(){$.plug('play',{ // plugin name
+        <script>coderunner["syntax"] = function(){$.plug('play',{ // plugin name
   defaults: {
     option: 'defaults',
     methodoption: 'this is a method'
@@ -101,8 +102,8 @@ logger('created plugin "play"');</code></pre>
 
 logger('created plugin "play"');}
         </script><br>
-        <p class="hyphenate">Now the <em>plugin</em> is registred.</p>
-        <div data-run="library" class="run">
+        <p class="hyphenate">Now the plugin is registred.</p>
+        <div data-run="syntax library" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">$.pluglib
@@ -117,9 +118,9 @@ console.log('plug library:\n',$.pluglib)
 logger('take a look in the console')}
         </script><br><br>
         <h3>Calling the plugin</h3>
-        <p class="hyphenate">We can call the <em>plugin</em> in different ways:</p><br>
-        <p class="hyphenate">Calling the plugin. <br>It will invoke the <em>init</em> function and nothing more.</p>
-        <div data-run="pluginsyntax basicrun" class="run">
+        <p class="hyphenate">We can call the plugin in different ways:</p><br>
+        <p class="hyphenate">Calling the plugin. <br>It will invoke the init function and nothing more.</p>
+        <div data-run="syntax basicrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// call the play plugin
@@ -139,8 +140,8 @@ $('#myElement').play();
 
 }
         </script><br>
-        <p class="hyphenate">Overwriting the default <em>options</em>:</p>
-        <div data-run="pluginsyntax overwriterun" class="run">
+        <p class="hyphenate">Overwriting the default options:</p>
+        <div data-run="syntax overwriterun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// passing options argument
@@ -154,8 +155,8 @@ $('#myElement').play({
 });
 }
         </script><br>
-        <p class="hyphenate">Adding a <em>callback</em>:</p>
-        <div data-run="pluginsyntax callbackrun" class="run">
+        <p class="hyphenate">Adding a callback:</p>
+        <div data-run="syntax callbackrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// just using a callback
@@ -169,8 +170,8 @@ $('#myElement').play(function(){
 });
 }
         </script><br>
-        <p class="hyphenate">Mixing default <em>options</em> overwrite and <em>callbacks</em>:</p>
-        <div data-run="pluginsyntax mixrun" class="run">
+        <p class="hyphenate">Mixing default options overwrite and callbacks:</p>
+        <div data-run="syntax mixrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// first argument options
@@ -190,8 +191,8 @@ $('#myElement').play({
 });
 }
         </script><br>
-        <p class="hyphenate">overwriting default options with html <em>data-attributes</em>:</p>
-        <div data-run="pluginsyntax overwritedata basicrun" class="run">
+        <p class="hyphenate">overwriting default options with html data-attributes:</p>
+        <div data-run="syntax overwritedata basicrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// The syntax for this is data-pluginname-optionname
@@ -207,9 +208,9 @@ $('#myElement').attr('data-play-option','data attribute overwrite');}
       <h2>Methods
         <hr/></h2>
       <div class="content">
-        <p class="hyphenate">Methods are the <em>children</em> of a <em>plugin</em>. The great thing about them is, that you can call them seperatly on new elements. The way to do this is pretty straigt forward:</p><br>
-        <p class="hyphenate">calling a <em>method</em></p>
-        <div data-run="pluginsyntax methodcall" class="run">
+        <p class="hyphenate">Methods are the children of a plugin. The great thing about them is, that you can call them seperatly on new elements. The way to do this is pretty straigt forward:</p><br>
+        <p class="hyphenate">calling a method</p>
+        <div data-run="syntax methodcall" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// calling a method
@@ -217,8 +218,8 @@ $('#myElement').play('method')</code></pre>
         <script>coderunner["methodcall"] = function(){// calling a method
 $('#myElement').play('method')}
         </script><br>
-        <p class="hyphenate">calling a method with <em>arguments</em></p>
-        <div data-run="pluginsyntax methodcallargs" class="run">
+        <p class="hyphenate">calling a method with arguments</p>
+        <div data-run="syntax methodcallargs" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// calling a method
@@ -246,7 +247,7 @@ $('#myElement').play('method',{
           <li>prepend</li>
         </ul><br>
         <h3>copying a plugin</h3>
-        <div data-run="pluginsyntax modcopy" class="run">
+        <div data-run="syntax modcopy" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// copy play into winning
@@ -256,8 +257,8 @@ logger('copied "play" into "winning"')</code></pre>
 $.plug.copy('play','winning');
 logger('copied "play" into "winning"')}
         </script><br>
-        <p class="hyphenate">calling the now <em>seperate</em> plugins</p>
-        <div data-run="pluginsyntax modcopy modcopycall" class="run">
+        <p class="hyphenate">calling the now seperate plugins</p>
+        <div data-run="syntax modcopy modcopycall" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">
@@ -275,8 +276,8 @@ logger('calling "winning"');
 $('#myElement').winning();
 }
         </script><br>
-        <p class="hyphenate">replacing a <em>plugin</em> with copy</p>
-        <div data-run="pluginsyntax modcopyreplace" class="run">
+        <p class="hyphenate">replacing a plugin with copy</p>
+        <div data-run="syntax modcopyreplace" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">$.plug('loosing',{
@@ -308,8 +309,8 @@ logger('replaced "loosing" with "play"');
 // check the console for information
 console.log($.pluglib.loosing)}
         </script><br><br>
-        <h3>replacing a <em>method</em></h3>
-        <div data-run="pluginsyntax modpreplace basicrun" class="run">
+        <h3>replacing a method</h3>
+        <div data-run="syntax modpreplace basicrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// replace takes three arguments: pluginname, method name, new function 
@@ -329,8 +330,8 @@ $.plug.replace('play','init',function () {
 logger('"init" replaced by "method"');
 }
         </script><br><br>
-        <h3>appending to a <em>method</em></h3>
-        <div data-run="pluginsyntax modpreplace modappend basicrun" class="run">
+        <h3>appending to a method</h3>
+        <div data-run="syntax modpreplace modappend basicrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// append takes three arguments: pluginname, method name, new function 
@@ -350,8 +351,8 @@ $.plug.append('play','init',function () {
 
 }
         </script><br><br>
-        <h3>prepending to a <em>method</em></h3>
-        <div data-run="pluginsyntax modpreplace modprepend basicrun" class="run">
+        <h3>prepending to a method</h3>
+        <div data-run="syntax modpreplace modprepend basicrun" class="run">
           <div class="show">execute<i class="fa fa-level-down"></i></div>
         </div>
         <pre><code class="js">// prepend takes three arguments: pluginname, method name, new function 
@@ -370,16 +371,9 @@ $.plug.prepend('play','init',function () {
 
 
 }
-        </script><br>
+        </script><br><br><br><br>
       </div>
-      
-      
-      
-      
-      
-      
-      
-      
+      <p class="hyphenate">You've read trough the whole documentation?!<br> Well than you need some dirstraction! check this out: <br> <a href="http://plugplay.ch/" title="plugplay" target="_blank">http://plugplay.ch/</a></p><br>
     </main>
     <footer>
       <script src="http://cdn.jsdelivr.net/highlight.js/8.6/highlight.min.js"></script>

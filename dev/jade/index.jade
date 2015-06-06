@@ -40,11 +40,11 @@ html(lang="en")
       +opensection('Introduction')
       .content
         p.hyphenate
-          | <em>Plug.js</em> is a function to create jQuery plugin prototypes on the fly. 
+          | Plug.js is a function to create jQuery plugin prototypes on the fly. 
           | And the best thing is, once you’ve created a plugin, you'll have global access to it and its methods.
           br
           br
-          | That means you can use the <em>methods</em> of a <em>plugin</em> on completly different objects or plugins, 
+          | That means you can use the methods of a plugin on completly different objects or plugins, 
           | which leads to less code and great readability. 
 
         h3 Table of Contents:
@@ -55,8 +55,8 @@ html(lang="en")
             a(href="#Methods") Methods
           li
             a(href="#Modifying") Modifying
-          //- li
-            //- a(href="#Advanced") Advanced
+          li
+            a(href="#Advanced") Advanced
       +opensection('Plugins')
       .content
         p.hyphenate Each plugin consists of three elements: 
@@ -73,20 +73,20 @@ html(lang="en")
         h3 Basic plugin syntax.
 
 
-        .run(data-run="pluginsyntax")
+        .run(data-run="syntax")
           .show execute
             i.fa.fa-level-down
         pre
           code.js
-            include blocks/pluginsyntax.js
+            include blocks/syntax.js
         script
-          +codestart('pluginsyntax')
-          include blocks/pluginsyntax.js
-          +codeend('pluginsyntax')
+          +codestart('syntax')
+          include blocks/syntax.js
+          +codeend('syntax')
         br
 
-        p.hyphenate Now the <em>plugin</em> is registred.
-        .run(data-run="library")
+        p.hyphenate Now the plugin is registred.
+        .run(data-run="syntax library")
           .show execute
             i.fa.fa-level-down
         pre
@@ -101,12 +101,12 @@ html(lang="en")
 
         br
         h3 Calling the plugin
-        p.hyphenate We can call the <em>plugin</em> in different ways:
+        p.hyphenate We can call the plugin in different ways:
         br
 
 
-        p.hyphenate Calling the plugin. <br>It will invoke the <em>init</em> function and nothing more.
-        .run(data-run="pluginsyntax basicrun")
+        p.hyphenate Calling the plugin. <br>It will invoke the init function and nothing more.
+        .run(data-run="syntax basicrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -118,8 +118,8 @@ html(lang="en")
           +codeend('basicrun')
         br
 
-        p.hyphenate Overwriting the default <em>options</em>:
-        .run(data-run="pluginsyntax overwriterun")
+        p.hyphenate Overwriting the default options:
+        .run(data-run="syntax overwriterun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -131,8 +131,8 @@ html(lang="en")
           +codeend('overwriterun')
         br
 
-        p.hyphenate Adding a <em>callback</em>:
-        .run(data-run="pluginsyntax callbackrun")
+        p.hyphenate Adding a callback:
+        .run(data-run="syntax callbackrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -144,8 +144,8 @@ html(lang="en")
           +codeend('callbackrun')
         br
 
-        p.hyphenate Mixing default <em>options</em> overwrite and <em>callbacks</em>:
-        .run(data-run="pluginsyntax mixrun")
+        p.hyphenate Mixing default options overwrite and callbacks:
+        .run(data-run="syntax mixrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -157,8 +157,8 @@ html(lang="en")
           +codeend('mixrun')
         br
 
-        p.hyphenate overwriting default options with html <em>data-attributes</em>:
-        .run(data-run="pluginsyntax overwritedata basicrun")
+        p.hyphenate overwriting default options with html data-attributes:
+        .run(data-run="syntax overwritedata basicrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -174,12 +174,12 @@ html(lang="en")
 
       +opensection('Methods')
       .content
-        p.hyphenate Methods are the <em>children</em> of a <em>plugin</em>. The great thing about them is, that you can call them seperatly on new elements. The way to do this is pretty straigt forward:
+        p.hyphenate Methods are the children of a plugin. The great thing about them is, that you can call them seperatly on new elements. The way to do this is pretty straigt forward:
         br
 
 
-        p.hyphenate calling a <em>method</em>
-        .run(data-run="pluginsyntax methodcall")
+        p.hyphenate calling a method
+        .run(data-run="syntax methodcall")
           .show execute
             i.fa.fa-level-down
         pre
@@ -191,8 +191,8 @@ html(lang="en")
           +codeend('methodcall')
         br  
         
-        p.hyphenate calling a method with <em>arguments</em>
-        .run(data-run="pluginsyntax methodcallargs")
+        p.hyphenate calling a method with arguments
+        .run(data-run="syntax methodcallargs")
           .show execute
             i.fa.fa-level-down
         pre
@@ -217,7 +217,7 @@ html(lang="en")
         br
         h3 copying a plugin
 
-        .run(data-run="pluginsyntax modcopy")
+        .run(data-run="syntax modcopy")
           .show execute
             i.fa.fa-level-down
         pre
@@ -229,8 +229,8 @@ html(lang="en")
           +codeend('modcopy')
         br
 
-        p.hyphenate calling the now <em>seperate</em> plugins
-        .run(data-run="pluginsyntax modcopy modcopycall")
+        p.hyphenate calling the now seperate plugins
+        .run(data-run="syntax modcopy modcopycall")
           .show execute
             i.fa.fa-level-down
         pre
@@ -242,8 +242,8 @@ html(lang="en")
           +codeend('modcopycall')
         br 
 
-        p.hyphenate replacing a <em>plugin</em> with copy
-        .run(data-run="pluginsyntax modcopyreplace")
+        p.hyphenate replacing a plugin with copy
+        .run(data-run="syntax modcopyreplace")
           .show execute
             i.fa.fa-level-down
         pre
@@ -257,9 +257,9 @@ html(lang="en")
 
 
         br
-        h3 replacing a <em>method</em>
+        h3 replacing a method
 
-        .run(data-run="pluginsyntax modpreplace basicrun")
+        .run(data-run="syntax modpreplace basicrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -273,9 +273,9 @@ html(lang="en")
 
 
         br
-        h3 appending to a <em>method</em>
+        h3 appending to a method
 
-        .run(data-run="pluginsyntax modpreplace modappend basicrun")
+        .run(data-run="syntax modpreplace modappend basicrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -289,9 +289,9 @@ html(lang="en")
 
 
         br
-        h3 prepending to a <em>method</em>
+        h3 prepending to a method
 
-        .run(data-run="pluginsyntax modpreplace modprepend basicrun")
+        .run(data-run="syntax modpreplace modprepend basicrun")
           .show execute
             i.fa.fa-level-down
         pre
@@ -302,46 +302,11 @@ html(lang="en")
           include blocks/modprepend.js
           +codeend('modprepend')
         br
-
-      //- +opensection('Advanced')
-      //- .content
-      //-   p.hyphenator This section is for showing off what <em>plug.js</em> is capeable of.
-      //-   h3 example #1
-
-      //-   .run(data-run="exampleone")
-      //-     .show execute
-      //-       i.fa.fa-level-down
-      //-   pre
-      //-     code.js
-      //-       include blocks/exampleone.js
-      //-   script
-      //-     +codestart('exampleone')
-      //-     include blocks/exampleone.js
-      //-     +codeend('exampleone')
-      //-   br
-
-      //-   p.hyphenate okay i was just joking... here is the real one 
-
-      //-   .run(data-run="exampleonereal")
-      //-     .show execute
-      //-       i.fa.fa-level-down
-      //-   pre
-      //-     code.js
-      //-       include blocks/exampleonereal.js
-      //-   script
-      //-     +codestart('exampleonereal')
-      //-     include blocks/exampleonereal.js
-      //-     +codeend('exampleonereal')
-      //-   br
-
-
-
-
-
-
-
-
-
+        br
+        br
+        br
+      p.hyphenate You've read trough the whole documentation?!<br> Well than you need some dirstraction! check this out: <br> <a href="http://plugplay.ch/" title="plugplay" target="_blank">http://plugplay.ch/</a>
+      br
     footer
       script( src="http://cdn.jsdelivr.net/highlight.js/8.6/highlight.min.js")
       script hljs.initHighlightingOnLoad();
