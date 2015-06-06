@@ -1,3 +1,11 @@
+/*
+  plug.js
+  Version: 1.0.0 2015-06-06
+  http://hvlmnns.github.io/plug.js/
+  The MIT License (MIT)
+  Copyright (c) 2015 hvlmnns
+*/
+
 // dependencies !!
 
 ;(function ($) { 'use strict';

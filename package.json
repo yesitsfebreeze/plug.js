@@ -1,6 +1,6 @@
 {
   "name": "plug",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A function to create jQuery Plugins on a Prototype base",
   "main": "index.js",
   "scripts": {
