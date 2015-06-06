@@ -1,3 +1,5 @@
+// dependencies !!
+
 ;(function ($) { 'use strict';
   $.pluglib = {}; // register library
   $.plug = function(name,functions) {

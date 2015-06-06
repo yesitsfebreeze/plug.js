@@ -55,8 +55,8 @@ html(lang="en")
             a(href="#Methods") Methods
           li
             a(href="#Modifying") Modifying
-          li
-            a(href="#Advanced") Advanced
+          //- li
+            //- a(href="#Advanced") Advanced
       +opensection('Plugins')
       .content
         p.hyphenate Each plugin consists of three elements: 
@@ -303,11 +303,36 @@ html(lang="en")
           +codeend('modprepend')
         br
 
-      +opensection('Advanced')
-      .content
-        p.hyphenator This section is for showing off what <em>plug.js</em> is capeable of.
+      //- +opensection('Advanced')
+      //- .content
+      //-   p.hyphenator This section is for showing off what <em>plug.js</em> is capeable of.
+      //-   h3 example #1
 
+      //-   .run(data-run="exampleone")
+      //-     .show execute
+      //-       i.fa.fa-level-down
+      //-   pre
+      //-     code.js
+      //-       include blocks/exampleone.js
+      //-   script
+      //-     +codestart('exampleone')
+      //-     include blocks/exampleone.js
+      //-     +codeend('exampleone')
+      //-   br
 
+      //-   p.hyphenate okay i was just joking... here is the real one 
+
+      //-   .run(data-run="exampleonereal")
+      //-     .show execute
+      //-       i.fa.fa-level-down
+      //-   pre
+      //-     code.js
+      //-       include blocks/exampleonereal.js
+      //-   script
+      //-     +codestart('exampleonereal')
+      //-     include blocks/exampleonereal.js
+      //-     +codeend('exampleonereal')
+      //-   br
 
 
 
