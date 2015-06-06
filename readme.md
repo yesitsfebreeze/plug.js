@@ -1,16 +1,12 @@
-# Plug.js
+# Plug.js - an awesome plugin wrapper.
 
-Plug is a function to create jQuery plugin Prototypes on the fly.
+**Plug.js** is a function to create jQuery plugin Prototypes on the fly.
 
 ***
 
-Once you’ve created a plugin, you have global access to it.
-That means you can use Methods of one Plugin in an entirely different one.
-That lead to less code and better usability of snippets.
+Plug.js is a function to create jQuery plugin prototypes on the fly. And the best thing is, once you’ve created a plugin, you’ll have global access to it and its methods.
 
-For having an overview of the used plugins, you can access them via
-    $.sockets
-
+That means you can use the methods of a plugin on completely different objects or plugins, which leads to less code and great readability.
 
 For any further information please visit
 http://hvlmnns.github.io/plug.js/
