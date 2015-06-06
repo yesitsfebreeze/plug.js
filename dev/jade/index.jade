@@ -1,0 +1,327 @@
+mixin opensection(name)
+  a(name="#{name}")
+  h2= name
+    hr
+mixin codestart(name)
+  | coderunner["#{name}"] = function(){
+mixin codeend()
+  | }
+
+doctype
+html(lang="en")
+  head
+    title plug.js - an awesome plugin wrapper
+    //- meta
+    meta(charset="utf-8")
+    meta(http-equiv="x-ua-compatible" content="ie=edge")
+    meta(name="description" content="an awesome plugin wrapper")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    //- styles
+    link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css")
+    link(rel="stylesheet" href="http://cdn.jsdelivr.net/highlight.js/8.6/styles/github.min.css")
+    link(rel="stylesheet" href="lib/style.css")
+    script var coderunner = {};
+  body
+    main
+      .links
+        h3
+          a(target="_blank" href="https://github.com/hvlmnns/jquery.plug/archive/master.zip") download 
+            i.fa.fa-download
+        h3
+          a( target="_blank" href="https://github.com/hvlmnns/jquery.plug/") gitHub 
+            i.fa.fa-github
+      #head
+        header
+          h1
+            a.big(target="_blank" href="https://github.com/hvlmnns/jquery.plug") plug.js 
+            | — an awesome plugin wrapper.
+      #logger
+      #myElement
+      +opensection('Introduction')
+      .content
+        p.hyphenate
+          | <em>Plug.js</em> is a function to create jQuery plugin prototypes on the fly. 
+          | And the best thing is, once you’ve created a plugin, you'll have global access to it and its methods.
+          br
+          br
+          | That means you can use the <em>methods</em> of a <em>plugin</em> on completly different objects or plugins, 
+          | which leads to less code and great readability. 
+
+        h3 Table of Contents:
+        ul
+          li
+            a(href="#Plugins") Plugins
+          li
+            a(href="#Methods") Methods
+          li
+            a(href="#Modifying") Modifying
+          li
+            a(href="#Advanced") Advanced
+      +opensection('Plugins')
+      .content
+        p.hyphenate Each plugin consists of three elements: 
+          ul
+            li name
+            li options
+            li methods
+        br
+        br
+        p.hyphenate
+          strong
+            em Note: click execute to see the code in action.
+          br  
+        h3 Basic plugin syntax.
+
+
+        .run(data-run="pluginsyntax")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/pluginsyntax.js
+        script
+          +codestart('pluginsyntax')
+          include blocks/pluginsyntax.js
+          +codeend('pluginsyntax')
+        br
+
+        p.hyphenate Now the <em>plugin</em> is registred.
+        .run(data-run="library")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/library.js
+        script
+          +codestart('library')
+          include blocks/library.js
+          +codeend('library')
+        br
+
+
+        br
+        h3 Calling the plugin
+        p.hyphenate We can call the <em>plugin</em> in different ways:
+        br
+
+
+        p.hyphenate Calling the plugin. <br>It will invoke the <em>init</em> function and nothing more.
+        .run(data-run="pluginsyntax basicrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/basicrun.js
+        script
+          +codestart('basicrun')
+          include blocks/basicrun.js
+          +codeend('basicrun')
+        br
+
+        p.hyphenate Overwriting the default <em>options</em>:
+        .run(data-run="pluginsyntax overwriterun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/overwriterun.js
+        script
+          +codestart('overwriterun')
+          include blocks/overwriterun.js
+          +codeend('overwriterun')
+        br
+
+        p.hyphenate Adding a <em>callback</em>:
+        .run(data-run="pluginsyntax callbackrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/callbackrun.js
+        script
+          +codestart('callbackrun')
+          include blocks/callbackrun.js
+          +codeend('callbackrun')
+        br
+
+        p.hyphenate Mixing default <em>options</em> overwrite and <em>callbacks</em>:
+        .run(data-run="pluginsyntax mixrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/mixrun.js
+        script
+          +codestart('mixrun')
+          include blocks/mixrun.js
+          +codeend('mixrun')
+        br
+
+        p.hyphenate overwriting default options with html <em>data-attributes</em>:
+        .run(data-run="pluginsyntax overwritedata basicrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/overwritedata.js
+        script
+          +codestart('overwritedata')
+          include blocks/overwritedata.js
+          +codeend('overwritedata')
+        br
+
+
+
+      +opensection('Methods')
+      .content
+        p.hyphenate Methods are the <em>children</em> of a <em>plugin</em>. The great thing about them is, that you can call them seperatly on new elements. The way to do this is pretty straigt forward:
+        br
+
+
+        p.hyphenate calling a <em>method</em>
+        .run(data-run="pluginsyntax methodcall")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/methodcall.js
+        script
+          +codestart('methodcall')
+          include blocks/methodcall.js
+          +codeend('methodcall')
+        br  
+        
+        p.hyphenate calling a method with <em>arguments</em>
+        .run(data-run="pluginsyntax methodcallargs")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/methodcallargs.js
+        script
+          +codestart('methodcallargs')
+          include blocks/methodcallargs.js
+          +codeend('methodcallargs')
+        br
+
+      +opensection('Modifying')
+      .content
+        p.hyphenate There are four types of modifiers.
+        ul
+          li copy
+          li replace
+          li append
+          li prepend
+
+
+        br
+        h3 copying a plugin
+
+        .run(data-run="pluginsyntax modcopy")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/modcopy.js
+        script
+          +codestart('modcopy')
+          include blocks/modcopy.js
+          +codeend('modcopy')
+        br
+
+        p.hyphenate calling the now <em>seperate</em> plugins
+        .run(data-run="pluginsyntax modcopy modcopycall")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/modcopycall.js
+        script
+          +codestart('modcopycall')
+          include blocks/modcopycall.js
+          +codeend('modcopycall')
+        br 
+
+        p.hyphenate replacing a <em>plugin</em> with copy
+        .run(data-run="pluginsyntax modcopyreplace")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/modcopyreplace.js
+        script
+          +codestart('modcopyreplace')
+          include blocks/modcopyreplace.js
+          +codeend('modcopyreplace')
+        br 
+
+
+        br
+        h3 replacing a <em>method</em>
+
+        .run(data-run="pluginsyntax modpreplace basicrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/modpreplace.js
+        script
+          +codestart('modpreplace')
+          include blocks/modpreplace.js
+          +codeend('modpreplace')
+        br
+
+
+        br
+        h3 appending to a <em>method</em>
+
+        .run(data-run="pluginsyntax modpreplace modappend basicrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/modappend.js
+        script
+          +codestart('modappend')
+          include blocks/modappend.js
+          +codeend('modappend')
+        br
+
+
+        br
+        h3 prepending to a <em>method</em>
+
+        .run(data-run="pluginsyntax modpreplace modprepend basicrun")
+          .show execute
+            i.fa.fa-level-down
+        pre
+          code.js
+            include blocks/modprepend.js
+        script
+          +codestart('modprepend')
+          include blocks/modprepend.js
+          +codeend('modprepend')
+        br
+
+      +opensection('Advanced')
+      .content
+        p.hyphenator This section is for showing off what <em>plug.js</em> is capeable of.
+
+
+
+
+
+
+
+
+
+
+
+    footer
+      script( src="http://cdn.jsdelivr.net/highlight.js/8.6/highlight.min.js")
+      script hljs.initHighlightingOnLoad();
+      script( src="lib/hyphenator.min.js")
+      script( src="lib/jquery.latest.min.js")
+      script( src="lib/plug.min.js")
+      script( src="lib/page.min.js")
+

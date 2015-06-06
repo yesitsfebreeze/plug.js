@@ -9,10 +9,10 @@ module.exports = function(grunt) {
           sourceMap: true
         },
         files: {
-          'jquery.plug.min.js':   'dev/jquery.plug.js',
-          'jquery.latest.min.js': 'dev/jquery.latest.js',
-          // 'hyphenator.min.js': 'dev/hyphenator.js',
-          'page.min.js': 'dev/page.js',
+          'lib/plug.min.js':   'dev/plug.js',
+          'lib/jquery.latest.min.js': 'dev/jquery.latest.js',
+          'lib/hyphenator.min.js': 'dev/hyphenator.js',
+          'lib/page.min.js': 'dev/page.js',
         },
       }
     },
@@ -22,8 +22,18 @@ module.exports = function(grunt) {
           sourceMap: true
         },
         files: {
-          'style.css': 'dev/styles.styl'
+          'lib/style.css': 'dev/styles.styl'
         },
+      }
+    },
+    jade: {
+      compile: {
+        options: {
+          pretty: true
+        },
+        files: {
+          "index.html": ["dev/jade/index.jade"]
+        }
       }
     },
     watch: {
@@ -34,15 +44,18 @@ module.exports = function(grunt) {
       js: {
         files: ['dev/**/*.js'],
         tasks: ['uglify'],
-        options: {reload: true }
+      },
+      jade: {
+        files: ['dev/jade/**/*.jade','dev/jade/**/*.js'],
+        tasks: ['jade'],
       },
       styl: {
         files: ['dev/**/*.styl'],
         tasks: ['stylus'],
-        options: {reload: true }
       }
     }
   });
+  grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-stylus');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
