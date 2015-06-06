@@ -9,7 +9,7 @@ module.exports = function(grunt) {
           sourceMap: true
         },
         files: {
-          'prod/jquery.plug.min.js':   'dev/jquery.plug.js',
+          'prod/plug.min.js':   'dev/plug.js',
         },
       }
     },

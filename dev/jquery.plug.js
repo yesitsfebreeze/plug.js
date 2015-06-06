@@ -1,87 +1,151 @@
-$.plug = function(proto,name,fn) {
-  // function to add the prototype as a jquery plugin
-  this.play =  function(proto,plugin) {
-    var pluginname = (proto)?proto+'__'+plugin.prototype.name:plugin.prototype.name;
-    $.fn[pluginname] = function(name,opts) {
-      var o = opts;
-      return this.each(function() {
-          // pass options to element
-          if (o && pluginname != plugin.prototype.name) {
-            this.opts = this.opts || {};
-            this.opts[pluginname] = o;
-          }
-          // create plugin
-          new plugin(this, name , (o)?o:false);
-      })
-    };
-  };
+// dependencies !!
 
-  // function to create the first global prototype
-  this.socket = function(proto) {
+;(function ($) { 'use strict';
+  $.pluglib = {}; // register library
+  $.plug = function(name,functions) {
+    var name,functions;
+    // main plug function
+    $.plug.js = function() {
+      if(name) $.plug.js.proto();
+    }
+    $.plug.js.noop = function() {};
 
-    // create plugin container if not already existing
-    $.sockets = $.sockets || {} ;
+    // create prototype for the plugin
+    $.plug.js.proto = function() {
+      $.plug.js.fn(); // make function
+      $.plug[name].prototype = {
+        constructor: name,
+        name: name,
+        init: $.plug.js.noop()
+      }
+      $.extend(true,$.plug[name].prototype,functions)
+      $.plug[name].defaults = $.plug[name].prototype.defaults;
+      $.plug.js.register();
+    }
 
-    // check if plugin already exists
-    if ('object' == typeof $.sockets[proto]) return false;
-
-    // create init function to call the global plugin
-    $.sockets[proto] = $.sockets[proto] || {};
-    $.sockets[proto][proto] = function(el,meth,opts) {
-        // if method exists; execute it else execute init
-        (meth) ? this.__execute(el,meth,opts) : this.__execute(el,false,opts);
-    };
-
-    // define the base prototype
-    $.extend($.sockets[proto][proto].prototype, {  
-      name: proto,
-      __execute: function(el,meth,opts) {
-        meth = (meth)?proto+'__'+meth:false;
-        if (meth) {
-          return $(el)[meth](el,opts);
+    // create base function
+    $.plug.js.fn = function() {
+      $.plug[name] = function(el, opts, callback) {
+        this.proto      = $.plug[name].prototype
+        this.el        = el;
+        this.$el       = $(el);
+        var inlinedata = $.plug.js.inlinedata(this.defaults,this.$el);
+        this.opts      = $.extend(true,{}, this.defaults, opts, inlinedata);
+      };
+    }
+    
+    // register plugin in jquery library
+    $.plug.js.register = function () {
+      var subs = $.plug.js.getsubs(name);
+      $.plug.js.registersubs(subs);
+      $.fn[name] = function(opts, callback, fallback) {
+        if ('string' == typeof opts) {
+          this.each(function() {
+            $(this)[name+'__'+opts](this,callback,fallback);
+          });
+          return this
         } else {
-          // fire init function if no method is defined
-          init = proto+'__init';
-          if (!$.fn[init])  return console.info('Please provide a init method for the '+proto+' plugin.');
-          return $(el)[init](el,opts);
+          this.each(function() {
+            new $.plug[name](this, opts, callback).init();
+            return $.plug.js.callback([opts,callback],this);
+          });
+          return this
+        }
+      };
+      $.pluglib[name] = $.plug[name].prototype;
+    }
+
+    // register plugin methods in jquery library
+    $.plug.js.getsubs = function (name,all) {
+      var temp = $.plug[name].prototype;
+      var subs = {};
+      for(var fn in temp){
+        if (all) {
+          subs[fn] = temp[fn];
+        }else {
+          if ('function' == typeof temp[fn]) {
+            subs[fn] = temp[fn];
+          }
         }
       }
-    })  
-
-    this.play(false,$.sockets[proto][proto]);
-  }
-
-  // run plugin function to make sure the plugin exist
-  // gets cancled if it already exists
-  this.socket(proto);
-
-  // dont continue if only prototype should be created
-  if (!name && !fn) return;
-
-  // inform the user if name is not set
-  if (!name || 'string' !== typeof name ) return console.info('Please provide a method name for the '+proto+' plugin.');
-
-  // copy init function from the global plugin
-  $.sockets[proto][name] = function (e) {
-    if (this.defaults && e.opts){
-      var opts = $.extend({},this.defaults,e.opts[proto+'__'+name])
-    } else if (!this.defaults && e.opts){
-      var opts        = e.opts[proto+'__'+name];
+      return subs;
     }
-    this.opts       = opts || {};
-    this.plugName = proto;
-    this.el         = $(e);
-    this.init()
+
+    $.plug.js.registersubs = function(subs) {
+      for (var fn in subs) {
+        $.fn[name+'__'+fn] =  function (el,opts, callback) {
+          new $.plug[name](el, opts, callback)[fn]();
+          return $.plug.js.callback([opts,callback],el);
+        }
+      }
+    }
+
+    // returning inline data attributs as object
+    $.plug.js.inlinedata = function(defaults,obj) {
+      var data = {};
+      for(var option in defaults){
+        data[option] = obj.data(name.toLowerCase()+'-'+option)
+      }
+      return data;
+    }
+
+    $.plug.js.callback = function(callback,el) {
+      for(var n in callback) {
+        if ('function' == typeof callback[n]) { 
+          (function(el) {
+            this[name+'__callback'] = callback[n];
+            this[name+'__callback']();
+            delete this[name+'__callback'];
+          }).call(el);
+        }
+      }
+    }
+    
+    // copy plugin
+    $.plug.copy = function (name,copy) {
+      var subs = $.plug.js.getsubs(name,true);
+      $.plug(copy,subs);
+      $.plug[copy].prototype.name        = copy;
+      $.plug[copy].prototype.constructor = copy;
+    }
+
+    // replace funtion
+    $.plug.replace = function (name,method,replace) {
+      if ('function' == typeof $.plug[name].prototype[method]) {
+        return $.plug[name].prototype[method] = replace;
+      }
+      throw new Error('\n$.plug.js:  Plugin ('+name+') has no ('+method+') function.')
+    }
+
+    $.plug.append = function (name,method,append) {
+      $.plug.js.modify('append',name,method,append)
+    }
+
+    $.plug.prepend = function (name,method,prepend) {
+      $.plug.js.modify('prepend',name,method,prepend)
+    }
+
+    $.plug.js.modify = function (type,name,method,fn) {
+      if ('function' == typeof $.plug[name].prototype[method]) {
+        var original = $.plug[name].prototype[method]
+        if (type == 'append') {
+          $.plug[name].prototype[method] = function () {
+            original.call(this)
+            fn.call(this)
+          }
+        } else if (type == 'prepend') {
+          $.plug[name].prototype[method] = function () {
+            fn.call(this)
+            original.call(this)
+          }
+        }
+        return;
+      }
+      throw new Error('\n$.plug.js - '+type+':  Plugin ('+name+') has no ('+method+') function.')
+    }
+    // execute plug
+    $.plug.js();
+
   };
 
-  // extend the prototype with passed functions
-  $.extend($.sockets[proto][name].prototype, {
-    name: name,
-    init: function() {
-      // inform the user that the init function has not changed
-      console.info('Init function for the '+proto+' '+name+' method has not been set. Plugin may not behave as desired.')
-    }
-  },fn) // passed funtions
-
-  this.play(proto,$.sockets[proto][name]);
-}
+})(jQuery);
