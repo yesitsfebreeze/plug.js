@@ -13,4 +13,4 @@ For having an overview of the used plugins, you can access them via
 
 
 For any further information please visit
-http://hvlmnns.github.io/jquery.plug/
+http://hvlmnns.github.io/plug.js/
