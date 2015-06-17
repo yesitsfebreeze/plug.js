@@ -1,7 +1,8 @@
+$.plug('play',{
+  init: function () {
+    logger('called "play"');
+  }
+})
+
 // call the play plugin
-
-logger('calling "play"');
-
-$('#myElement').play();
-
-
+$('#element').play();

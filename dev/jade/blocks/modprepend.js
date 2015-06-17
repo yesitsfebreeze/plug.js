@@ -1,7 +1,13 @@
-// prepend takes three arguments: pluginname, method name, new function 
+$.plug('play',{
+  init: function () {
+    logger('first');
+  }
+});
 
+// append takes three arguments: pluginname, method name, new function 
 $.plug.prepend('play','init',function () {
-  logger('prepended function');
-})
+  logger('second');
+});
 
-
+// calling play
+$('#element').play();

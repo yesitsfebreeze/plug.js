@@ -1,7 +1,12 @@
-// replace takes three arguments: pluginname, method name, new function 
-
-$.plug.replace('play','init',function () {
-  this.method();
+$.plug('play',{
+  init: function () {
+    logger('old init');
+  }
 });
 
-logger('"init" replaced by "method"');
+// replace takes three arguments: pluginname, method name, new function 
+$.plug.replace('play','init',function () {
+  logger('new init');
+});
+
+$('#element').play();

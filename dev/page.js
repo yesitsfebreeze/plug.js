@@ -30,6 +30,7 @@ $(function () {
 
   }
   $(document).on('click','.run',function () {
+    $.pluglib = {};
     fn = $(this).attr('data-run').split(' ');
     for (var run in fn) {
         coderunner[fn[run]]();  

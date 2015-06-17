@@ -1,2 +1,11 @@
+$.plug('play',{
+  init: function () {
+    // do your stuff
+  },
+  method: function(){
+    logger('called "method"');
+  }
+});
+
 // calling a method
-$('#myElement').play('method')
+$('#element').play('method');

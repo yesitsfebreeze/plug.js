@@ -86,6 +86,17 @@ a
 
 .content 
   padding-left 30px
+
+
+  
+@keyframes bounce
+  0%,10%,20%,50%,80%
+    transform(translateY(0))
+  40%
+    transform(translateY(-5px))
+  60%
+    transform(translateY(-5px))
+
 .run
   display inline-block
   cursor  pointer
@@ -94,6 +105,7 @@ a
       color accent
       left  20px
       opacity 1
+      animate(bounce)
     .show
       opacity 1
   i
@@ -170,4 +182,3 @@ pre
       animate(log)
     &.out
       animate(logout)
-

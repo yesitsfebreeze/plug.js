@@ -1,4 +1,13 @@
+$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+})
+
 // passing options argument
-$('#myElement').play({
-  option: 'overwritten defaults'
+$('#element').play({
+  option: 'new option'
 });

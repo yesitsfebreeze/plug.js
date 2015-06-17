@@ -23,7 +23,7 @@
         </header>
       </div>
       <div id="logger"></div>
-      <div id="myElement"></div><a name="Introduction"></a>
+      <div id="element"></div><a name="Introduction"></a>
       <h2>Introduction
         <hr/></h2>
       <div class="content">
@@ -52,189 +52,331 @@
         </p><br><br>
         <p class="hyphenate"><strong><em>Note: click execute to see the code in action.</em></strong><br></p>
         <h3>Basic plugin syntax.</h3>
-        <div data-run="syntax" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">$.plug('play',{ // plugin name
+        <div class="code">
+          <div data-run="syntax" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{ // plugin name
+  dependency: '', // on what plugins this one depends
   defaults: {
-    option: 'defaults',
-    methodoption: 'this is a method'
+    option: 'defaults' // setting default options
   },
   init: function () { // default function
-    this.proto // prototype of your plugin
-    this.el,   // javascript object of selected element
-    this.$el,  // jQuery object of selected element
-    this.opts  // options merged from defaults, passed options and data attributes
-
-    logger('executed "init" of "'+this.proto.name+'"')
-    logger(this.opts.option)
-
-    // this.method(); // calling a method
+    this.proto     // prototype of your plugin
+    this.el,       // javascript object of selected element
+    this.$el,      // jQuery object of selected element
+    this.opts      // options merged from defaults, passed options and data attributes
+    this.method(); // calling a method
   },
   method: function () { // custom method
-    logger(this.opts.methodoption)
-    logger('executed "method" of play')
+    // do your stuff
   }
 });
 
 logger('created plugin "play"');</code></pre>
-        <script>coderunner["syntax"] = function(){$.plug('play',{ // plugin name
+          <script>coderunner["syntax"] = function(){$.plug('play',{ // plugin name
+  dependency: '', // on what plugins this one depends
   defaults: {
-    option: 'defaults',
-    methodoption: 'this is a method'
+    option: 'defaults' // setting default options
   },
   init: function () { // default function
-    this.proto // prototype of your plugin
-    this.el,   // javascript object of selected element
-    this.$el,  // jQuery object of selected element
-    this.opts  // options merged from defaults, passed options and data attributes
-
-    logger('executed "init" of "'+this.proto.name+'"')
-    logger(this.opts.option)
-
-    // this.method(); // calling a method
+    this.proto     // prototype of your plugin
+    this.el,       // javascript object of selected element
+    this.$el,      // jQuery object of selected element
+    this.opts      // options merged from defaults, passed options and data attributes
+    this.method(); // calling a method
   },
   method: function () { // custom method
-    logger(this.opts.methodoption)
-    logger('executed "method" of play')
+    // do your stuff
   }
 });
 
 logger('created plugin "play"');}
-        </script><br>
-        <p class="hyphenate">Now the plugin is registred.</p>
-        <div data-run="syntax library" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
+          </script><br>
         </div>
-        <pre><code class="js">$.pluglib
+        <p class="hyphenate">Now the plugin is registred.</p>
+        <div class="code">
+          <div data-run="library" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    // do your stuff
+  }
+});
 
-console.log('plug library:\n',$.pluglib)
+console.log('plug library:\n',$.pluglib);
+logger('take a look in the console');</code></pre>
+          <script>coderunner["library"] = function(){$.plug('play',{
+  init: function () {
+    // do your stuff
+  }
+});
 
-logger('take a look in the console')</code></pre>
-        <script>coderunner["library"] = function(){$.pluglib
-
-console.log('plug library:\n',$.pluglib)
-
-logger('take a look in the console')}
-        </script><br><br>
+console.log('plug library:\n',$.pluglib);
+logger('take a look in the console');}
+          </script><br>
+        </div><br>
         <h3>Calling the plugin</h3>
         <p class="hyphenate">We can call the plugin in different ways:</p><br>
         <p class="hyphenate">Calling the plugin. <br>It will invoke the init function and nothing more.</p>
-        <div data-run="syntax basicrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// call the play plugin
+        <div class="code">
+          <div data-run="basicrun" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    logger('called "play"');
+  }
+})
 
-logger('calling "play"');
-
-$('#myElement').play();
-
-
+// call the play plugin
+$('#element').play();
 </code></pre>
-        <script>coderunner["basicrun"] = function(){// call the play plugin
+          <script>coderunner["basicrun"] = function(){$.plug('play',{
+  init: function () {
+    logger('called "play"');
+  }
+})
 
-logger('calling "play"');
-
-$('#myElement').play();
-
-
+// call the play plugin
+$('#element').play();
 }
-        </script><br>
+          </script><br>
+        </div>
         <p class="hyphenate">Overwriting the default options:</p>
-        <div data-run="syntax overwriterun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// passing options argument
-$('#myElement').play({
-  option: 'overwritten defaults'
+        <div class="code">
+          <div data-run="overwriterun" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+})
+
+// passing options argument
+$('#element').play({
+  option: 'new option'
 });
 </code></pre>
-        <script>coderunner["overwriterun"] = function(){// passing options argument
-$('#myElement').play({
-  option: 'overwritten defaults'
+          <script>coderunner["overwriterun"] = function(){$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+})
+
+// passing options argument
+$('#element').play({
+  option: 'new option'
 });
 }
-        </script><br>
+          </script><br>
+        </div>
         <p class="hyphenate">Adding a callback:</p>
-        <div data-run="syntax callbackrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
+        <div class="code">
+          <div data-run="callbackrun" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    logger('called "play"');
+  }
+})
+
+// adding a callback
+$('#element').play(function(){
+  logger('executed callback')
+});</code></pre>
+          <script>coderunner["callbackrun"] = function(){$.plug('play',{
+  init: function () {
+    logger('called "play"');
+  }
+})
+
+// adding a callback
+$('#element').play(function(){
+  logger('executed callback')
+});}
+          </script><br>
         </div>
-        <pre><code class="js">// just using a callback
-$('#myElement').play(function(){
-  logger('callback')
-});
-</code></pre>
-        <script>coderunner["callbackrun"] = function(){// just using a callback
-$('#myElement').play(function(){
-  logger('callback')
-});
-}
-        </script><br>
         <p class="hyphenate">Mixing default options overwrite and callbacks:</p>
-        <div data-run="syntax mixrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// first argument options
-// second argument callback
-$('#myElement').play({
-  option: 'mixing stuff'
+        <div class="code">
+          <div data-run="mixrun" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+});
+
+// adding options and callbacks
+$('#element').play({
+  option: 'new option'
 },function(){
-  logger('callback')
+  logger('executed callback');
 });
 </code></pre>
-        <script>coderunner["mixrun"] = function(){// first argument options
-// second argument callback
-$('#myElement').play({
-  option: 'mixing stuff'
+          <script>coderunner["mixrun"] = function(){$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+});
+
+// adding options and callbacks
+$('#element').play({
+  option: 'new option'
 },function(){
-  logger('callback')
+  logger('executed callback');
 });
 }
-        </script><br>
-        <p class="hyphenate">overwriting default options with html data-attributes:</p>
-        <div data-run="syntax overwritedata basicrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
+          </script><br>
         </div>
-        <pre><code class="js">// The syntax for this is data-pluginname-optionname
+        <p class="hyphenate">overwriting default options with html data-attributes:</p>
+        <div class="code">
+          <div data-run="overwritedata" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+});
+
+// The syntax for this is data-pluginname-optionname
 
 // adding data attribute to object
-$('#myElement').attr('data-play-option','data attribute overwrite');</code></pre>
-        <script>coderunner["overwritedata"] = function(){// The syntax for this is data-pluginname-optionname
+$('#element').attr('data-play-option','data attribute overwrite');
+
+$('#element').play();
+
+// Note:
+//   A data attribute will always overwrite passed options
+//   So we are removing it again to avoid conflicts
+$('#element').removeAttr('data-play-option');
+
+$('#element').play();
+</code></pre>
+          <script>coderunner["overwritedata"] = function(){$.plug('play',{
+  defaults: {
+    option: 'option'
+  },
+  init: function () {
+    logger(this.opts.option);
+  }
+});
+
+// The syntax for this is data-pluginname-optionname
 
 // adding data attribute to object
-$('#myElement').attr('data-play-option','data attribute overwrite');}
-        </script><br>
+$('#element').attr('data-play-option','data attribute overwrite');
+
+$('#element').play();
+
+// Note:
+//   A data attribute will always overwrite passed options
+//   So we are removing it again to avoid conflicts
+$('#element').removeAttr('data-play-option');
+
+$('#element').play();
+}
+          </script><br>
+        </div>
       </div><a name="Methods"></a>
       <h2>Methods
         <hr/></h2>
       <div class="content">
         <p class="hyphenate">Methods are the children of a plugin. The great thing about them is, that you can call them seperatly on new elements. The way to do this is pretty straigt forward:</p><br>
         <p class="hyphenate">calling a method</p>
-        <div data-run="syntax methodcall" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
+        <div class="code">
+          <div data-run="methodcall" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    // do your stuff
+  },
+  method: function(){
+    logger('called "method"');
+  }
+});
+
+// calling a method
+$('#element').play('method');</code></pre>
+          <script>coderunner["methodcall"] = function(){$.plug('play',{
+  init: function () {
+    // do your stuff
+  },
+  method: function(){
+    logger('called "method"');
+  }
+});
+
+// calling a method
+$('#element').play('method');}
+          </script><br>
         </div>
-        <pre><code class="js">// calling a method
-$('#myElement').play('method')</code></pre>
-        <script>coderunner["methodcall"] = function(){// calling a method
-$('#myElement').play('method')}
-        </script><br>
         <p class="hyphenate">calling a method with arguments</p>
-        <div data-run="syntax methodcallargs" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
+        <div class="code">
+          <div data-run="methodcallargs" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  defaults: {
+    option: 'original'
+  },
+  init: function () {
+    // do your stuff
+  },
+  method: function(){
+    logger('called "method"');
+    logger(this.opts.option);
+  }
+});
+
+// calling a method
+$('#element').play('method',{
+  option: 'new option'
+},function(){
+  logger('executed callback');
+});</code></pre>
+          <script>coderunner["methodcallargs"] = function(){$.plug('play',{
+  defaults: {
+    option: 'original'
+  },
+  init: function () {
+    // do your stuff
+  },
+  method: function(){
+    logger('called "method"');
+    logger(this.opts.option);
+  }
+});
+
+// calling a method
+$('#element').play('method',{
+  option: 'new option'
+},function(){
+  logger('executed callback');
+});}
+          </script><br>
         </div>
-        <pre><code class="js">// calling a method
-$('#myElement').play('method',{
-  methodoption: 'overwritten defaults'
-},function(){
-  logger('callback')
-})</code></pre>
-        <script>coderunner["methodcallargs"] = function(){// calling a method
-$('#myElement').play('method',{
-  methodoption: 'overwritten defaults'
-},function(){
-  logger('callback')
-})}
-        </script><br>
       </div><a name="Modifying"></a>
       <h2>Modifying
         <hr/></h2>
@@ -247,131 +389,188 @@ $('#myElement').play('method',{
           <li>prepend</li>
         </ul><br>
         <h3>copying a plugin</h3>
-        <div data-run="syntax modcopy" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// copy play into winning
-$.plug.copy('play','winning');
-logger('copied "play" into "winning"')</code></pre>
-        <script>coderunner["modcopy"] = function(){// copy play into winning
-$.plug.copy('play','winning');
-logger('copied "play" into "winning"')}
-        </script><br>
-        <p class="hyphenate">calling the now seperate plugins</p>
-        <div data-run="syntax modcopy modcopycall" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">
-logger('calling "play"');
-$('#myElement').play();
-
-logger('calling "winning"');
-$('#myElement').winning();
-</code></pre>
-        <script>coderunner["modcopycall"] = function(){
-logger('calling "play"');
-$('#myElement').play();
-
-logger('calling "winning"');
-$('#myElement').winning();
-}
-        </script><br>
-        <p class="hyphenate">replacing a plugin with copy</p>
-        <div data-run="syntax modcopyreplace" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">$.plug('loosing',{
+        <div class="code">
+          <div data-run="modcopy" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
   init: function () {
-    // this is a new plugin for sake of demonstration
-    // the next plug command will replace it
+    logger('you loose');
   }
 });
 
-// replacing a plugin with copy
-$.plug.copy('play','loosing');
+// copy play into newplugin loosing
+$.plug.copy('play','loosing')
 
-logger('replaced "loosing" with "play"');
 
-// check the console for information
-console.log($.pluglib.loosing)</code></pre>
-        <script>coderunner["modcopyreplace"] = function(){$.plug('loosing',{
+$('#element').loosing();
+
+
+$.plug('winning',{
   init: function () {
-    // this is a new plugin for sake of demonstration
-    // the next plug command will replace it
+    this.price()
+  },
+  price: function(){
+    logger('you win');
+  }
+
+});
+
+// this can also be used to replace existing plugins
+$.plug.copy('winning','play')
+
+
+$('#element').play();</code></pre>
+          <script>coderunner["modcopy"] = function(){$.plug('play',{
+  init: function () {
+    logger('you loose');
   }
 });
 
-// replacing a plugin with copy
-$.plug.copy('play','loosing');
+// copy play into newplugin loosing
+$.plug.copy('play','loosing')
 
-logger('replaced "loosing" with "play"');
 
-// check the console for information
-console.log($.pluglib.loosing)}
-        </script><br><br>
+$('#element').loosing();
+
+
+$.plug('winning',{
+  init: function () {
+    this.price()
+  },
+  price: function(){
+    logger('you win');
+  }
+
+});
+
+// this can also be used to replace existing plugins
+$.plug.copy('winning','play')
+
+
+$('#element').play();}
+          </script><br>
+        </div><br>
         <h3>replacing a method</h3>
-        <div data-run="syntax modpreplace basicrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// replace takes three arguments: pluginname, method name, new function 
-
-$.plug.replace('play','init',function () {
-  this.method();
+        <div class="code">
+          <div data-run="modpreplace" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    logger('old init');
+  }
 });
 
-logger('"init" replaced by "method"');
-</code></pre>
-        <script>coderunner["modpreplace"] = function(){// replace takes three arguments: pluginname, method name, new function 
-
+// replace takes three arguments: pluginname, method name, new function 
 $.plug.replace('play','init',function () {
-  this.method();
+  logger('new init');
 });
 
-logger('"init" replaced by "method"');
-}
-        </script><br><br>
+$('#element').play();</code></pre>
+          <script>coderunner["modpreplace"] = function(){$.plug('play',{
+  init: function () {
+    logger('old init');
+  }
+});
+
+// replace takes three arguments: pluginname, method name, new function 
+$.plug.replace('play','init',function () {
+  logger('new init');
+});
+
+$('#element').play();}
+          </script><br>
+        </div><br>
         <h3>appending to a method</h3>
-        <div data-run="syntax modpreplace modappend basicrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// append takes three arguments: pluginname, method name, new function 
+        <div class="code">
+          <div data-run="modappend" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    logger('first');
+  }
+});
 
+// append takes three arguments: pluginname, method name, new function 
 $.plug.append('play','init',function () {
-  logger('appended function');
-})
+  logger('second');
+});
 
+// calling play
+$('#element').play();</code></pre>
+          <script>coderunner["modappend"] = function(){$.plug('play',{
+  init: function () {
+    logger('first');
+  }
+});
 
-</code></pre>
-        <script>coderunner["modappend"] = function(){// append takes three arguments: pluginname, method name, new function 
-
+// append takes three arguments: pluginname, method name, new function 
 $.plug.append('play','init',function () {
-  logger('appended function');
-})
+  logger('second');
+});
 
-
-}
-        </script><br><br>
+// calling play
+$('#element').play();}
+          </script><br>
+        </div><br>
         <h3>prepending to a method</h3>
-        <div data-run="syntax modpreplace modprepend basicrun" class="run">
-          <div class="show">execute<i class="fa fa-level-down"></i></div>
-        </div>
-        <pre><code class="js">// prepend takes three arguments: pluginname, method name, new function 
+        <div class="code">
+          <div data-run="modprepend" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">$.plug('play',{
+  init: function () {
+    logger('first');
+  }
+});
 
+// append takes three arguments: pluginname, method name, new function 
 $.plug.prepend('play','init',function () {
-  logger('prepended function');
-})
+  logger('second');
+});
 
+// calling play
+$('#element').play();</code></pre>
+          <script>coderunner["modprepend"] = function(){$.plug('play',{
+  init: function () {
+    logger('first');
+  }
+});
 
-</code></pre>
-        <script>coderunner["modprepend"] = function(){// prepend takes three arguments: pluginname, method name, new function 
-
+// append takes three arguments: pluginname, method name, new function 
 $.plug.prepend('play','init',function () {
-  logger('prepended function');
-})
+  logger('second');
+});
 
+// calling play
+$('#element').play();}
+          </script><br>
+        </div><br><br>
+        <p class="hyphenate">you can set dependecies if you're extending existing plugins.</p>
+        <div class="code">
+          <div data-run="dependency" class="run">
+            <div class="show">execute<i class="fa fa-code"></i></div>
+          </div>
+          <pre><code class="js">logger('take a look in the console');
 
-}
-        </script><br><br><br><br>
+$.plug('dependency example',{
+  dependency: 'anotherplugin',
+  init: function () {
+    // do your stuff
+  }
+});</code></pre>
+          <script>coderunner["dependency"] = function(){logger('take a look in the console');
+
+$.plug('dependency example',{
+  dependency: 'anotherplugin',
+  init: function () {
+    // do your stuff
+  }
+});}
+          </script><br>
+        </div><br><br><br>
       </div>
       <p class="hyphenate">You've read trough the whole documentation?!<br> Well than you need some dirstraction! check this out: <br> <a href="http://plugplay.ch/" title="plugplay" target="_blank">http://plugplay.ch/</a></p><br>
     </main>
