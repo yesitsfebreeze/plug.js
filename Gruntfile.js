@@ -23,13 +23,14 @@ module.exports = function(grunt) {
           banner: plugbanner
         },
         files: {
-          'plug.min.js':   'dev/plug.js',
+          'plug.min.js':   'plug.js',
         },
       }
     },
     watch: {
       gruntchange: {
         files: ['Gruntfile.js'],
+        tasks: ['uglify'],
         options: {reload: true }
       },
       js: {
@@ -41,6 +42,6 @@ module.exports = function(grunt) {
   });
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask("default","watch");
+  grunt.registerTask("default","uglify","watch");
 
 };
