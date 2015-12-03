@@ -60,7 +60,7 @@
                             if("undefined" != typeof $(this)[name + '__' + opts]) {
                                 $(this)[name + '__' + opts](this, callback, fallback);
                             } else {
-                                throw new Error('\n$.plug.js:  Plugin (' + name + ') has no (' + method + ') function.')
+                                throw new Error('\n$.plug.js:  Plugin (' + name + ') has no (' + opts + ') function.');
                             }
                         });
                         return this;
