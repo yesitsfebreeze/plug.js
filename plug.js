@@ -58,7 +58,7 @@
                     } else {
                         this.each(function() {
                             if("undefined" != typeof $(this)[name + '__' + opts]) {
-                                $(this)[name + '__' + opts](this, callback, fallback);
+                                $(this)[name + '__' + opts](this, callback, fallback,opts);
                             } else {
                                 throw new Error('\n$.plug.js:  Plugin (' + name + ') has no (' + opts + ') function.');
                             }
@@ -109,8 +109,8 @@
 
         $.plug.js.registerSubs = function(subs) {
             for(var fn in subs) {
-                $.fn[name + '__' + fn] = function(el, opts, callback) {
-                    new $.plug[name](this, opts, callback)[fn]();
+                $.fn[name + '__' + fn] = function(el, opts, callback, sub) {
+                    new $.plug[name](this, opts, callback)[sub]();
                     return $.plug.js.callback([opts, callback], el);
                 }
             }
