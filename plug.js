@@ -22,7 +22,7 @@
                 constructor: name,
                 name: name,
                 init: function() {}
-            }
+            } 
             $.extend(true, $.plug[name].prototype, functions)
             $.plug[name].defaults = $.plug[name].prototype.defaults;
             $.plug.js.register();
@@ -40,7 +40,7 @@
             };
         }
 
-        // register plugin in jquery library
+        // register plugin in jquery plugin library
         $.plug.js.register = function() {
             $.plug.js.dependency();
             var subs = $.plug.js.getsubs(name);
@@ -74,6 +74,8 @@
                     return this;
                 }
             };
+            // register plugin in jquery library
+            $[name] = $.fn[name];
             // register plugin in plug library
             $.pluglib[name] = $.plug[name].prototype;
         }
