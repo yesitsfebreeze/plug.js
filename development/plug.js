@@ -862,22 +862,6 @@
         return copy;
     };
 
-    /**
-     * transfers one object into another
-     * the original target will be lost
-     * handle with care
-     *
-     * @param target
-     * @param src
-     * @return object
-     */
-    plug.private.helpers.copy = function(target) {
-        for(var copy in target) {
-            if(target.hasOwnProperty(copy)) {
-                this[copy] = target[copy];
-            }
-        }
-    };
 
     /**
      * converts a string value to

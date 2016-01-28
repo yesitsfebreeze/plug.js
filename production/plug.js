@@ -483,13 +483,6 @@
         }
         return copy;
     };
-    plug.private.helpers.copy = function(target) {
-        for (var copy in target) {
-            if (target.hasOwnProperty(copy)) {
-                this[copy] = target[copy];
-            }
-        }
-    };
     plug.private.helpers.parseToVal = function(value) {
         if (typeof value == "string") {
             if (value !== "") {
