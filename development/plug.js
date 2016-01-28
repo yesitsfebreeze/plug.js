@@ -31,7 +31,7 @@
         root[name] = plugin;
         Node.prototype[name] = plugin;
         if($) $.fn[name] = plugin;
-    }
+    };
 
     plug.configs = {};
     plug.list = {};
@@ -41,7 +41,7 @@
     plug.private.register = function(definition) {
         var socket = new plug.private.socket(definition);
         return new plug.private.instance(socket);
-    }
+    };
 
 
     /**
@@ -70,7 +70,7 @@
         plug.list[socket.name] = socket;
 
         return socket;
-    }
+    };
 
     /**
      * just assigns the private object
@@ -81,7 +81,7 @@
     plug.private.socket.private = function(socket) {
         socket.private = {};
         return socket;
-    }
+    };
 
     /**
      * checks if we extend another plugin
@@ -103,7 +103,7 @@
             }
         }
         return socket;
-    }
+    };
 
     /**
      * checks if we have any required plugins defined
@@ -145,7 +145,7 @@
         }
 
         return socket;
-    }
+    };
 
     /**
      * adds the current definition to our socket
@@ -158,7 +158,7 @@
     plug.private.socket.definition = function(socket, definition) {
         socket.private.definition = definition;
         return socket;
-    }
+    };
 
     /**
      * wraps all methods with events
@@ -174,7 +174,7 @@
             }
         }
         return socket;
-    }
+    };
 
     /**
      * wraps a single method with events
@@ -203,7 +203,7 @@
 
         }
         return socket;
-    }
+    };
 
     /**
      * registers the plugin in the global library
@@ -214,7 +214,7 @@
     plug.private.socket.register = function(socket) {
         plug.list[socket.name] = socket;
         return socket;
-    }
+    };
 
 
     /**
@@ -240,7 +240,7 @@
             instance = plug.private.instance.guid(instance);
             return plug.private.instance.function.apply(instance, arguments);
         };
-    }
+    };
 
     /**
      * creates the actual function
@@ -273,7 +273,7 @@
             instance.__private.return = plug.private.instance.execute(instance);
         }
         return instance.__private.return;
-    }
+    };
 
     /**
      * the actual function execute
@@ -298,7 +298,7 @@
             throw new TypeError("plug.js -> " + instance.name + " has no " + instance.__private.callee + " method!");
         }
         return instance;
-    }
+    };
 
     /**
      * this is a little magic trick to copy the socket
@@ -312,7 +312,7 @@
         var instance = JSON.parse(JSON.stringify(socket));
         instance.__private = {};
         return instance;
-    }
+    };
 
     /**
      * adds the methods which will be lost on the instance create
@@ -331,7 +331,7 @@
             }
         }
         return instance;
-    }
+    };
 
     /**
      * adds all possible elements to the instance
@@ -379,7 +379,7 @@
 
         instance.__private.elements = elements;
         return instance;
-    }
+    };
 
     /**
      * this creates a global unique identifier for our instance
@@ -400,7 +400,7 @@
 
         instance.guid = guid(5);
         return instance
-    }
+    };
 
     /**
      * this is adding the function call arguments to our instance options
@@ -422,7 +422,7 @@
                 }
             }
         }
-    }
+    };
 
     /**
      * merges all data attributes into our instance opts object
@@ -454,7 +454,8 @@
             instance.opts = plug.private.helpers.transfer(instance.opts, settings);
         }
         return instance;
-    }
+    };
+
     /**
      * creates an multidimensional object from an array
      *
@@ -499,7 +500,7 @@
             }
         }
         return instance;
-    }
+    };
 
     /**
      * if we have an config option
@@ -517,7 +518,7 @@
             }
         }
         return instance;
-    }
+    };
 
 
     /**
@@ -555,7 +556,7 @@
             }
         }
         return context;
-    }
+    };
 
     /**
      * subscribe to an event
@@ -573,7 +574,7 @@
     plug.event.listen = function(name, fn) {
         var path = plug.private.event.getPath(name);
         plug.private.event.assign(plug.event.list, path, fn, 0);
-    }
+    };
 
     /**
      * remove the event subscriber
@@ -583,8 +584,11 @@
     plug.event.remove = function(name) {
         var path = plug.private.event.getPath(name);
         plug.private.event.assign(plug.event.list, path, false, 0, true);
-        plug.private.event.assign(plug.event.list, path, {}, 0);
-    }
+        plug.private.event.assign(plug.event.list, path, {};
+        0
+        )
+        ;
+    };
 
     /**
      * returns the path and namespace strings
@@ -595,7 +599,7 @@
     plug.private.event.getPath = function(name) {
         var namespaces = name.split('.');
         return namespaces;
-    }
+    };
 
     /**
      * adds the passed functions to the event list
@@ -623,7 +627,7 @@
             }
 
         }
-    }
+    };
 
     /**
      * returns all functions in an event object as a flat array
@@ -646,7 +650,7 @@
             }
         }
         return list;
-    }
+    };
 
     /**
      * returns the current event list for the selected namespace
@@ -662,7 +666,7 @@
             listeners = plug.private.event.getListeners(path, listeners[namespace]);
         }
         return listeners;
-    }
+    };
 
 
     /**
@@ -688,7 +692,7 @@
         delete Node.prototype[name];
         if($) delete $.fn[name];
         delete plug[name];
-    }
+    };
 
     /**
      * copys a plugin with the given name
@@ -704,7 +708,7 @@
         } else {
             throw new TypeError("plug.js -> can't copy " + from + " because it doesn't exist!");
         }
-    }
+    };
 
     /**
      * adds a new config to the defined plugin
@@ -717,7 +721,7 @@
         plug.configs[plugin] = plug.configs[plugin] || {};
         if(typeof opts != "object") throw new TypeError("plug.js -> config must be type of object!");
         plug.configs[plugin][name] = opts;
-    }
+    };
 
     /**
      * prepends a function to a method
@@ -728,7 +732,7 @@
      */
     plug.before = function(name, method, fn) {
         plug.private.modify("before", name, method, fn);
-    }
+    };
 
     /**
      *  completely replaces a method
@@ -739,7 +743,7 @@
      */
     plug.replace = function(name, method, fn) {
         plug.private.modify("replace", name, method, fn);
-    }
+    };
 
     /**
      * appends a function to a method
@@ -749,7 +753,7 @@
      */
     plug.after = function(name, method, fn) {
         plug.private.modify("after", name, method, fn);
-    }
+    };
 
     /**
      * this handles the before|replace|after functions
@@ -800,7 +804,7 @@
             throw new TypeError("plug.js -> cannot modify the plugin " + name + " because it doesn't exist!");
         }
 
-    }
+    };
 
 
     /**
@@ -888,7 +892,7 @@
             }
         }
         return value;
-    }
+    };
 
     /**
      * returns all object keys as an array
@@ -904,7 +908,7 @@
             }
         }
         return keys;
-    }
+    };
 
     /**
      * copy a object
@@ -937,5 +941,5 @@
                 return "this device cannot parse json";
             }
         }
-    }
+    };
 }));
