@@ -811,3 +811,19 @@ if(jq) {
     });
 
 }
+/**
+ * guid test
+ */
+
+plug({
+    name:"guidtest",
+    opts: {
+
+    },
+    init: function() {
+        var me = this;
+        return me.guid;
+    }
+});
+
+unittest("guid test", $(".guidtester").guidtest(), $(".guidtester").guidtest());

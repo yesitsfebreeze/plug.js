@@ -265,7 +265,7 @@
                     plug.private.instance.applyConfig(instance);
                     plug.private.instance.dataAttributes(instance);
                     plug.private.instance.applyOpts(instance);
-                    instance = plug.private.instance.guid(instance);
+                    plug.private.instance.applyGuid(instance);
                     instance.__private.return = plug.private.instance.execute(instance);
                 }
             }
@@ -520,6 +520,22 @@
         }
         return instance;
     };
+
+    /**
+     * adds a new guid if the selected element doesn't already have one
+     *
+     * @param instance
+     * @returns {*}
+     */
+    plug.private.instance.applyGuid = function(instance) {
+        instance.el.plug = instance.el.plug || {}
+        instance.el.plug[instance.name] = instance.el.plug[instance.name] || {};
+        instance.el.plug[instance.name].guid = instance.el.plug[instance.name].guid || plug.private.instance.guid(instance).guid;
+        instance.guid = instance.el.plug[instance.name].guid;
+        return instance;
+    };
+
+
 
 
     /**

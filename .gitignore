@@ -7,3 +7,7 @@ node_modules/
 
 .DS_Store
 .idea/workspace.xml
+encodings.xml
+modules.xml
+plug.io.iml
+vcs.xml
