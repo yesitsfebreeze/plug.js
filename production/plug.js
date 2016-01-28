@@ -2,7 +2,7 @@
 
     Plug.js
     A Javascript plugin manager
-    Version: 1.0.0 2016-01-27
+    Version: 1.0.0 2016-01-28
     author: Stefan Hövelmanns
     sayhello@hvlmnns.de
     The MIT License (MIT)
@@ -136,6 +136,7 @@
             var instance = plug.private.instance.create(socket);
             instance = plug.private.instance.getFunctions(instance, socket);
             instance = plug.private.instance.getElements(instance, this, arguments);
+            instance = plug.private.instance.guid(instance);
             return plug.private.instance.function.apply(instance, arguments);
         };
     };
@@ -223,6 +224,20 @@
             }
         }
         instance.__private.elements = elements;
+        return instance;
+    };
+    plug.private.instance.guid = function(instance) {
+        function guid(amount, guidString) {
+            guidString = guidString || "";
+            guidString += Math.floor((1 + Math.random()) * 65536).toString(16).substring(1);
+            if (amount != 0) {
+                amount--;
+                return guid(amount, guidString);
+            } else {
+                return guidString;
+            }
+        }
+        instance.guid = guid(5);
         return instance;
     };
     plug.private.instance.applyArguments = function(instance, args) {

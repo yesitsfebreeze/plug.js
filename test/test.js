@@ -552,7 +552,7 @@ plug({
         return this.opts.float;
     }
 });
-unittest("float option data attribute assignment", $(".floatcommadata").configplugin()[0], [8,15][0]);
+unittest("float option data attribute assignment", $(".floatcommadata").configplugin()[0], [8, 15][0]);
 
 
 /**
@@ -783,3 +783,29 @@ plug({
 });
 
 unittest("multiple plugins execution", plugtestthree() + plugtesttwo() + plugtestone(), "threetwoone");
+
+
+if(jq) {
+    plug({
+        name: "ajaxtest",
+        opts: {},
+        init: function() {
+            var me = this;
+            console.log(me.guid, me.$el.attr("class"));
+            $.ajax({
+                url: "http://plug.io"
+            }).done(function(response) {
+                console.log(me.guid, me.$el.attr("class"));
+            });
+        }
+    });
+
+    $(function() {
+        $(".ajaxtester").ajaxtest();
+
+        console.log(plug.private.instance.guid({}));
+        console.log(plug.private.instance.guid({}));
+        console.log(plug.private.instance.guid({}));
+    });
+
+}

@@ -233,6 +233,7 @@
             var instance = plug.private.instance.create(socket);
             instance = plug.private.instance.getFunctions(instance, socket);
             instance = plug.private.instance.getElements(instance, this, arguments);
+            instance = plug.private.instance.guid(instance);
             return plug.private.instance.function.apply(instance, arguments);
         };
     }
@@ -367,6 +368,27 @@
 
         instance.__private.elements = elements;
         return instance;
+    }
+
+    /**
+     * this creates a global unique identifier for our instance
+     *
+     * @param instance
+     */
+    plug.private.instance.guid = function(instance) {
+        function guid(amount, guidString) {
+            guidString = guidString || "";
+            guidString += Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1)
+            if(amount != 0) {
+                amount--;
+                return guid(amount, guidString)
+            } else {
+                return guidString;
+            }
+        }
+
+        instance.guid = guid(5);
+        return instance
     }
 
     /**
