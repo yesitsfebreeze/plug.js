@@ -94,9 +94,11 @@
             delete plug.private.required;
         }
         for (var name in definition.required) {
-            name = definition.required[name];
-            var plugin = plug.list[name];
-            if (typeof plugin == "undefined") throw new TypeError("plug.js -> " + definition.name + ": requires " + name + "!");
+            if (definition.required.hasOwnProperty(name)) {
+                name = definition.required[name];
+                var plugin = plug.list[name];
+                if (typeof plugin == "undefined") throw new TypeError("plug.js -> " + definition.name + ": requires " + name + "!");
+            }
         }
         return socket;
     };
@@ -106,7 +108,9 @@
     };
     plug.private.socket.wrapMethods = function(socket) {
         for (var val in socket) {
-            socket = plug.private.socket.updateMethod(socket, val);
+            if (socket.hasOwnProperty(val)) {
+                socket = plug.private.socket.updateMethod(socket, val);
+            }
         }
         return socket;
     };
@@ -116,9 +120,9 @@
                 var cache = socket[method].plugFunctionCache || socket[method];
                 var fn = function() {
                     plug.me = this;
-                    plug.event.add(socket.name + "/" + method + "/before", this);
-                    var result = cache.apply(this, arguments);
-                    plug.event.add(socket.name + "/" + method + "/after", this);
+                    plug.event.add(socket.name + "/" + method + "/before", plug.me);
+                    var result = cache.apply(plug.me, arguments);
+                    plug.event.add(socket.name + "/" + method + "/after", plug.me);
                     return result;
                 };
                 fn.plugFunctionCache = cache;
@@ -146,16 +150,19 @@
         instance.__private.return = false;
         if (instance.__private.elements) {
             for (var el in instance.__private.elements) {
-                instance.el = instance.__private.elements[el];
-                if ($) {
-                    instance.$el = $(instance.__private.elements[el]);
-                    instance.$el.context = document;
+                if (instance.__private.elements.hasOwnProperty(el)) {
+                    instance.el = instance.__private.elements[el];
+                    if ($) {
+                        instance.$el = $(instance.__private.elements[el]);
+                        instance.$el.context = document;
+                    }
+                    plug.private.instance.dataAttributes(instance, "config");
+                    plug.private.instance.applyConfig(instance);
+                    plug.private.instance.dataAttributes(instance);
+                    plug.private.instance.applyOpts(instance);
+                    instance = plug.private.instance.guid(instance);
+                    instance.__private.return = plug.private.instance.execute(instance);
                 }
-                plug.private.instance.dataAttributes(instance, "config");
-                plug.private.instance.applyConfig(instance);
-                plug.private.instance.dataAttributes(instance);
-                plug.private.instance.applyOpts(instance);
-                instance.__private.return = plug.private.instance.execute(instance);
             }
         } else {
             instance.__private.return = plug.private.instance.execute(instance);
@@ -184,9 +191,11 @@
     };
     plug.private.instance.getFunctions = function(instance, socket) {
         for (var i in socket) {
-            var fn = socket[i];
-            if (typeof fn == "function") {
-                instance[i] = socket[i];
+            if (socket.hasOwnProperty(i)) {
+                var fn = socket[i];
+                if (typeof fn == "function") {
+                    instance[i] = socket[i];
+                }
             }
         }
         return instance;
@@ -195,18 +204,20 @@
         var elements = false;
         var els = [];
         for (var arg in arguments) {
-            arg = arguments[arg];
-            if (arg instanceof Node) {
-                elements = [ arg ];
-                instance.__private.originalElements = arg;
-            } else if (typeof arg.context != "undefined") {
-                if ($) {
-                    $.each(context, function(k, v) {
-                        els.push(v);
-                    });
-                    elements = els;
+            if (arguments.hasOwnProperty(arg)) {
+                arg = arguments[arg];
+                if (arg instanceof Node) {
+                    elements = [ arg ];
+                    instance.__private.originalElements = arg;
+                } else if (typeof arg.context != "undefined") {
+                    if ($) {
+                        $.each(context, function(k, v) {
+                            els.push(v);
+                        });
+                        elements = els;
+                    }
+                    instance.__private.originalElements = arg;
                 }
-                instance.__private.originalElements = arg;
             }
         }
         if (!elements) {
@@ -243,12 +254,14 @@
     plug.private.instance.applyArguments = function(instance, args) {
         instance.__private.callee = "init";
         for (var arg in args) {
-            var arg = args[arg];
-            if (typeof arg == "object") {
-                instance.opts = plug.private.helpers.transfer(instance.opts, arg);
-            }
-            if (typeof arg == "string") {
-                instance.__private.callee = arg;
+            if (args.hasOwnProperty(arg)) {
+                var arg = args[arg];
+                if (typeof arg == "object") {
+                    instance.opts = plug.private.helpers.transfer(instance.opts, arg);
+                }
+                if (typeof arg == "string") {
+                    instance.__private.callee = arg;
+                }
             }
         }
     };
@@ -258,15 +271,17 @@
         if (data) {
             var settings = {};
             for (var name in data) {
-                var value = data[name];
-                var related = name.toLowerCase().substr(0, instanceName.length) == instanceName;
-                if (related) {
-                    var path = name.substr(instanceName.length).replace(/([A-Z])/g, ".$1").toLowerCase().slice(1).split(".");
-                    if (path[0] != "") {
-                        if (selector && path[0] == selector) {
-                            plug.private.instance.deepCreateFromArray(settings, path, value);
-                        } else {
-                            plug.private.instance.deepCreateFromArray(settings, path, value);
+                if (data.hasOwnProperty(name)) {
+                    var value = data[name];
+                    var related = name.toLowerCase().substr(0, instanceName.length) == instanceName;
+                    if (related) {
+                        var path = name.substr(instanceName.length).replace(/([A-Z])/g, ".$1").toLowerCase().slice(1).split(".");
+                        if (path[0] != "") {
+                            if (selector && path[0] == selector) {
+                                plug.private.instance.deepCreateFromArray(settings, path, value);
+                            } else {
+                                plug.private.instance.deepCreateFromArray(settings, path, value);
+                            }
                         }
                     }
                 }
@@ -319,7 +334,9 @@
         var listeners = plug.private.event.getListeners(path, plug.event.list);
         var list = plug.private.event.flatten(listeners);
         for (var instance in list) {
-            list[instance].apply(context);
+            if (list.hasOwnProperty(instance)) {
+                list[instance].apply(context);
+            }
         }
         return context;
     };
@@ -355,11 +372,13 @@
     plug.private.event.flatten = function(listeners, list) {
         if (typeof list == "undefined") list = [];
         for (var instance in listeners) {
-            if (typeof listeners[instance] == "function") {
-                list.push(listeners[instance]);
-            }
-            if (typeof listeners[instance] == "object") {
-                plug.private.event.flatten(listeners[instance], list);
+            if (listeners.hasOwnProperty(instance)) {
+                if (typeof listeners[instance] == "function") {
+                    list.push(listeners[instance]);
+                }
+                if (typeof listeners[instance] == "object") {
+                    plug.private.event.flatten(listeners[instance], list);
+                }
             }
         }
         return list;
@@ -436,26 +455,28 @@
     plug.private.helpers.transfer = function(target, src) {
         var copy = plug.private.helpers.copy(target);
         for (var val in src) {
-            var value = plug.private.helpers.parseToVal(src[val]);
-            var uppercase = plug.private.helpers.keys(target);
-            key = val;
-            for (var i in uppercase) {
-                var name = uppercase[i];
-                if (name.toLowerCase() == val) {
-                    var key = name;
-                }
-            }
-            if (typeof copy[key] == "undefined") {
-                copy[key] = value;
-            } else {
-                if (!!copy[key] && typeof copy[key] === "object") {
-                    if (copy[key] instanceof Node) {
-                        copy[key] = value;
-                    } else {
-                        copy[key] = plug.private.helpers.transfer(copy[key], value);
+            if (src.hasOwnProperty(val)) {
+                var value = plug.private.helpers.parseToVal(src[val]);
+                var uppercase = plug.private.helpers.keys(target);
+                key = val;
+                for (var i in uppercase) {
+                    var name = uppercase[i];
+                    if (name.toLowerCase() == val) {
+                        var key = name;
                     }
-                } else {
+                }
+                if (typeof copy[key] == "undefined") {
                     copy[key] = value;
+                } else {
+                    if (!!copy[key] && typeof copy[key] === "object") {
+                        if (copy[key] instanceof Node) {
+                            copy[key] = value;
+                        } else {
+                            copy[key] = plug.private.helpers.transfer(copy[key], value);
+                        }
+                    } else {
+                        copy[key] = value;
+                    }
                 }
             }
         }
@@ -486,13 +507,19 @@
     plug.private.helpers.keys = function(array) {
         var keys = [];
         for (var key in array) {
-            keys.push(key);
+            if (array.hasOwnProperty(key)) {
+                keys.push(key);
+            }
         }
         return keys;
     };
     plug.private.helpers.copy = function(obj) {
         var object = {};
-        for (var o in obj) object[o] = obj[o];
+        for (var o in obj) {
+            if (obj.hasOwnProperty(o)) {
+                object[o] = obj[o];
+            }
+        }
         return object;
     };
     plug.private.helpers.parseJson = function(data) {
