@@ -151,17 +151,18 @@
         if (instance.__private.elements) {
             for (var el in instance.__private.elements) {
                 if (instance.__private.elements.hasOwnProperty(el)) {
-                    instance.el = instance.__private.elements[el];
+                    var elInstance = plug.private.helpers.copy(instance);
+                    elInstance.el = elInstance.__private.elements[el];
                     if ($) {
-                        instance.$el = $(instance.__private.elements[el]);
-                        instance.$el.context = document;
+                        elInstance.$el = $(elInstance.__private.elements[el]);
+                        elInstance.$el.context = document;
                     }
-                    plug.private.instance.dataAttributes(instance, "config");
-                    plug.private.instance.applyConfig(instance);
-                    plug.private.instance.dataAttributes(instance);
-                    plug.private.instance.applyOpts(instance);
-                    plug.private.instance.applyGuid(instance);
-                    instance.__private.return = plug.private.instance.execute(instance);
+                    plug.private.instance.dataAttributes(elInstance, "config");
+                    plug.private.instance.applyConfig(elInstance);
+                    plug.private.instance.dataAttributes(elInstance);
+                    plug.private.instance.applyOpts(elInstance);
+                    plug.private.instance.applyGuid(elInstance);
+                    elInstance.__private.return = plug.private.instance.execute(elInstance);
                 }
             }
         } else {
@@ -170,7 +171,6 @@
         return instance.__private.return;
     };
     plug.private.instance.execute = function(instance) {
-        instance = plug.private.helpers.copy(instance);
         if (typeof instance[instance.__private.callee] == "function") {
             instance.__private.return = instance[instance.__private.callee].apply(instance, arguments);
             if (typeof instance.__private.return != "undefined") {
