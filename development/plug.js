@@ -285,6 +285,7 @@
      * @returns {*}
      */
     plug.private.instance.execute = function(instance) {
+        instance = plug.private.helpers.copy(instance);
         if(typeof instance[instance.__private.callee] == "function") {
             instance.__private.return = instance[instance.__private.callee].apply(instance, arguments);
             if(typeof instance.__private.return != "undefined") {
@@ -584,10 +585,7 @@
     plug.event.remove = function(name) {
         var path = plug.private.event.getPath(name);
         plug.private.event.assign(plug.event.list, path, false, 0, true);
-        plug.private.event.assign(plug.event.list, path, {};
-        0
-        )
-        ;
+        plug.private.event.assign(plug.event.list, path, {}, 0);
     };
 
     /**
@@ -862,6 +860,23 @@
         }
 
         return copy;
+    };
+
+    /**
+     * transfers one object into another
+     * the original target will be lost
+     * handle with care
+     *
+     * @param target
+     * @param src
+     * @return object
+     */
+    plug.private.helpers.copy = function(target) {
+        for(var copy in target) {
+            if(target.hasOwnProperty(copy)) {
+                this[copy] = target[copy];
+            }
+        }
     };
 
     /**
