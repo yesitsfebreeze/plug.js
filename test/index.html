@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Plug.js Unittest</title>
+        <style>
+            body {
+                background-color: #66c278;
+                font-family:      "Helvetica", sans-serif;
+                color:            #fff;
+            }
+
+            body.error {
+                background-color: #e93142;
+            }
+
+            .log {
+                border-radius: 3px;
+                margin:        8px 0;
+                font-size:     12px;
+            }
+
+            h1 {
+                margin-bottom: 20px;
+            }
+
+            .log .title {
+                text-transform: uppercase;
+                color:          white;
+            }
+
+            .error .log.success {
+                opacity: 0.3;
+            }
+
+            .error .log.failed {
+                opacity: 1;
+            }
+
+            .log .expected {
+                margin-top: 15px;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+        </style>
+    </head>
+    <body id="body">
+        <h1>
+            Plug.js Unittest
+        </h1>
+        <div id="blank"></div>
+        <div id="logger"></div>
+        <ul class="testlist hidden">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+
+        <div class="configtester" data-configplugin-config="testconfig"></div>
+        <div class="optstester" data-optstester-opts='{"option":true}'></div>
+        <div class="uppercasedata" data-configplugin-myUppercaseOption="true"></div>
+        <div class="deepdata" data-configplugin-this-is-my-option="true"></div>
+        <div class="specialname" data-this-is-my-plugin-this-is-myUppercaseOption="true"></div>
+        <div class="numberdata" data-configplugin-number="123"></div>
+        <div class="floatdata" data-configplugin-float="08.15"></div>
+        <div class="floatcommadata" data-configplugin-float="08,15"></div>
+        <div class="objectdata" data-configplugin-object='{"data": true}'></div>
+        <div class="arraydata" data-configplugin-array="1,2,3,4"></div>
+
+        <script type="text/javascript" src="jquery.js"></script>
+        <script type="text/javascript" src="../production/plug.min.js"></script>
+        <script type="text/javascript" src="tester.js"></script>
+        <script type="text/javascript" src="test.js"></script>
+    </body>
+</html>

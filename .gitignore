@@ -5,4 +5,4 @@ node_modules/
 
 *.sublime*
 
-page/
+.DS_Store
