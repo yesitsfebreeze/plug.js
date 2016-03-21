@@ -5,7 +5,7 @@
             plugWrapper = factory(global, jquery);
         } else {
             plugWrapper = function(window) {
-                if(!window.document) throw new Error("plug.js -> plug requires a window with a document!");
+                if(!window.document) console.warn("plug.js -> plug requires a window with a document!");
                 return factory(window, jquery);
             };
         }
@@ -25,7 +25,7 @@
      */
 
     root.plug = function(definition) {
-        if(typeof definition == "undefined") throw new Error("plug.js -> you need to pass a definition!");
+        if(typeof definition == "undefined") console.warn("plug.js -> you need to pass a definition!");
         var name = definition.name;
         var plugin = root.plug.private.register(definition);
         root[name] = plugin;
@@ -99,7 +99,7 @@
                 plug.private.required = target.name;
                 return target;
             } else {
-                throw new TypeError("plug.js -> " + definition.name + ": cannot extend from " + definition.extend + ", because it's not defined!");
+                console.warn("plug.js -> " + definition.name + ": cannot extend from " + definition.extend + ", because it's not defined!");
             }
         }
         return socket;
@@ -140,7 +140,7 @@
             if(definition.required.hasOwnProperty(name)) {
                 name = definition.required[name];
                 var plugin = plug.list[name];
-                if(typeof plugin == "undefined") throw new TypeError("plug.js -> " + definition.name + ": requires " + name + "!");
+                if(typeof plugin == "undefined") console.warn("plug.js -> " + definition.name + ": requires " + name + "!");
             }
         }
 
@@ -273,6 +273,17 @@
         } else {
             instance.__private.return = plug.private.instance.execute(instance);
         }
+
+        // execute all functions we pass via attributes
+        for (var arg in arguments) {
+            if (arguments.hasOwnProperty(arg)) {
+                arg = arguments[arg];
+                if (typeof arg == "function") {
+                    arg();
+                }
+            }
+        }
+
         return instance.__private.return;
     };
 
@@ -296,7 +307,7 @@
                 return instance;
             }
         } else {
-            throw new TypeError("plug.js -> " + instance.name + " has no " + instance.__private.callee + " method!");
+            console.warn("plug.js -> " + instance.name + " has no " + instance.__private.callee + " method!");
         }
         return instance;
     };
@@ -720,7 +731,7 @@
             source.name = to;
             plug(source);
         } else {
-            throw new TypeError("plug.js -> can't copy " + from + " because it doesn't exist!");
+            console.warn("plug.js -> can't copy " + from + " because it doesn't exist!");
         }
     };
 
@@ -733,7 +744,7 @@
      */
     plug.config = function(plugin, name, opts) {
         plug.configs[plugin] = plug.configs[plugin] || {};
-        if(typeof opts != "object") throw new TypeError("plug.js -> config must be type of object!");
+        if(typeof opts != "object") console.warn("plug.js -> config must be type of object!");
         plug.configs[plugin][name] = opts;
     };
 
@@ -812,10 +823,10 @@
 
                 //plug(plugin);
             } else {
-                throw new TypeError("plug.js -> " + name + ": cannot " + type + " the method " + methodname + " because it doesn't exist!");
+                console.warn("plug.js -> " + name + ": cannot " + type + " the method " + methodname + " because it doesn't exist!");
             }
         } else {
-            throw new TypeError("plug.js -> cannot modify the plugin " + name + " because it doesn't exist!");
+            console.warn("plug.js -> cannot modify the plugin " + name + " because it doesn't exist!");
         }
 
     };
@@ -894,7 +905,11 @@
                 } else if(value === "false") {
                     value = false;
                 } else if(/\,/.test(value)) {
-                    value = value.split(",");
+                    if (value[0] == "[") {
+                        value = value.replace("/^[/","");
+                        value = value.replace("/]$/","");
+                        value = value.split(",");
+                    }
                 } else if(!/\[|\]/.test(value) && !/[a-zA-Z]/.test(value) && /[0-9]/.test(value)) {
                     if(/\./.test(value)) {
                         value = parseFloat(value);
