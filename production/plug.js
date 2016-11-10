@@ -2,7 +2,7 @@
 
     Plug.js
     A Javascript plugin manager
-    Version: 1.0.0 2016-03-21
+    Version: 1.0.0 2016-11-09
     author: Stefan Hövelmanns
     sayhello@hvlmnns.de
     The MIT License (MIT)
@@ -28,9 +28,9 @@
     } else {
         factory(global, jquery);
     }
-})(typeof module !== "undefined" ? module : this, typeof window !== "undefined" ? window : this, typeof jQuery !== "undefined" ? jQuery : false, function(root, $) {
+})("undefined" !== typeof module ? module : this, "undefined" !== typeof window ? window : this, "undefined" !== typeof jQuery ? jQuery : false, function(root, $) {
     root.plug = function(definition) {
-        if (typeof definition == "undefined") console.warn("plug.js -> you need to pass a definition!");
+        if ("undefined" === typeof definition) console.warn("plug.js -> you need to pass a definition!");
         var name = definition.name;
         var plugin = root.plug.private.register(definition);
         root[name] = plugin;
@@ -61,23 +61,25 @@
         return socket;
     };
     plug.private.socket.extend = function(socket, definition) {
-        if (typeof definition.extends != "undefined") {
-            var target = plug.list[definition.extends];
-            if (typeof target != "undefined") {
-                plug.private.required = target.name;
-                return target;
-            } else {
-                console.warn("plug.js -> " + definition.name + ": cannot extend from " + definition.extend + ", because it's not defined!");
+        if ("undefined" !== typeof definition) {
+            if ("undefined" !== typeof definition.extends) {
+                var target = plug.list[definition.extends];
+                if ("undefined" !== typeof target) {
+                    plug.private.required = target.name;
+                    return target;
+                } else {
+                    console.warn("plug.js -> " + definition.name + ": cannot extend from " + definition.extend + ", because it's not defined!");
+                }
             }
         }
         return socket;
     };
     plug.private.socket.require = function(socket, definition) {
         definition.required = [];
-        if (typeof definition.require != "undefined") {
+        if ("undefined" !== typeof definition.require) {
             var plugins = definition.require;
-            definition.required = typeof plugins == "object" ? plugins : "__string__";
-            if (definition.required == "__string__") {
+            definition.required = "object" === typeof plugins ? plugins : "__string__";
+            if ("__string__" === definition.required) {
                 var spaces = /\s/.test(plugins);
                 var commas = /,/.test(plugins);
                 if (spaces) {
@@ -97,7 +99,7 @@
             if (definition.required.hasOwnProperty(name)) {
                 name = definition.required[name];
                 var plugin = plug.list[name];
-                if (typeof plugin == "undefined") console.warn("plug.js -> " + definition.name + ": requires " + name + "!");
+                if ("undefined" === typeof plugin) console.warn("plug.js -> " + definition.name + ": requires " + name + "!");
             }
         }
         return socket;
@@ -115,7 +117,7 @@
         return socket;
     };
     plug.private.socket.updateMethod = function(socket, method) {
-        if (typeof socket[method] == "function") {
+        if ("function" === typeof socket[method]) {
             socket[method] = function() {
                 var cache = socket[method].plugFunctionCache || socket[method];
                 var fn = function() {
@@ -171,7 +173,7 @@
         for (var arg in arguments) {
             if (arguments.hasOwnProperty(arg)) {
                 arg = arguments[arg];
-                if (typeof arg == "function") {
+                if ("function" === typeof arg) {
                     arg();
                 }
             }
@@ -179,9 +181,9 @@
         return instance.__private.return;
     };
     plug.private.instance.execute = function(instance) {
-        if (typeof instance[instance.__private.callee] == "function") {
+        if ("function" === typeof instance[instance.__private.callee]) {
             instance.__private.return = instance[instance.__private.callee].apply(instance, arguments);
-            if (typeof instance.__private.return != "undefined") {
+            if ("undefined" !== typeof instance.__private.return) {
                 return instance.__private.return;
             } else if (instance.__private.originalElements) {
                 return instance.__private.originalElements;
@@ -202,7 +204,7 @@
         for (var i in socket) {
             if (socket.hasOwnProperty(i)) {
                 var fn = socket[i];
-                if (typeof fn == "function") {
+                if ("function" === typeof fn) {
                     instance[i] = socket[i];
                 }
             }
@@ -218,7 +220,7 @@
                 if (arg instanceof Node) {
                     elements = [ arg ];
                     instance.__private.originalElements = arg;
-                } else if (typeof arg.context != "undefined") {
+                } else if ("undefined" !== typeof arg.context) {
                     if ($) {
                         $.each(context, function(k, v) {
                             els.push(v);
@@ -233,7 +235,7 @@
             if (context instanceof Window || context instanceof Node) {
                 elements = [ context ];
                 instance.__private.originalElements = context;
-            } else if (typeof context.context != "undefined") {
+            } else if ("undefined" !== typeof context.context) {
                 if ($) {
                     $.each(context, function(k, v) {
                         els.push(v);
@@ -264,11 +266,11 @@
         instance.__private.callee = "init";
         for (var arg in args) {
             if (args.hasOwnProperty(arg)) {
-                var arg = args[arg];
-                if (typeof arg == "object") {
+                arg = args[arg];
+                if ("object" === typeof arg) {
                     instance.opts = plug.private.helpers.transfer(instance.opts, arg);
                 }
-                if (typeof arg == "string") {
+                if ("string" === typeof arg) {
                     instance.__private.callee = arg;
                 }
             }
@@ -276,7 +278,23 @@
     };
     plug.private.instance.dataAttributes = function(instance, selector) {
         var instanceName = instance.name.toLowerCase().replace(/-/gi, "");
-        var data = instance.el.dataset;
+        if ("undefined" === typeof instance.el.dataset) {
+            instance.el.dataset = {};
+            var attributes = instance.el.attributes;
+            var i = attributes.length;
+            for (;i--; ) {
+                if (/^data-.*/.test(attributes[i].name)) {
+                    var dataAttribute = attributes[i];
+                    var attrName = dataAttribute.name.replace("data-", "");
+                    function toUpper(match) {
+                        return match.toUpperCase().substring(1);
+                    }
+                    attrName = attrName.replace(/-(.)/, toUpper);
+                    instance.el.dataset[attrName] = dataAttribute.value;
+                }
+            }
+            var data = instance.el.dataset;
+        }
         if (data) {
             var settings = {};
             for (var name in data) {
@@ -300,10 +318,10 @@
         return instance;
     };
     plug.private.instance.deepCreateFromArray = function(obj, path, val, index) {
-        if (typeof index == "undefined") index = 0;
-        if (typeof obj == "undefined") obj = {};
-        if (typeof obj[path[index]] != "object") obj[path[index]] = {};
-        if (typeof path[index + 1] != "undefined") {
+        if ("undefined" === typeof index) index = 0;
+        if ("undefined" === typeof obj) obj = {};
+        if ("object" !== typeof obj[path[index]]) obj[path[index]] = {};
+        if ("undefined" !== typeof path[index + 1]) {
             obj = plug.private.instance.deepCreateFromArray(obj[path[index]], path, val, index + 1);
             return obj;
         } else {
@@ -312,11 +330,11 @@
         }
     };
     plug.private.instance.applyConfig = function(instance) {
-        if (typeof instance.opts != "undefined") {
-            if (typeof instance.opts.config == "string") {
-                if (typeof plug.configs == "undefined") plug.configs = {};
+        if ("undefined" !== typeof instance.opts) {
+            if ("string" === typeof instance.opts.config) {
+                if ("undefined" === typeof plug.configs) plug.configs = {};
                 var config = plug.configs[instance.name][instance.opts.config];
-                if (typeof config != "undefined") {
+                if ("undefined" !== typeof config) {
                     instance.opts = plug.private.helpers.transfer(instance.opts, config);
                 } else {
                     console.warn("plug.js -> can't find the config '" + instance.opts.config + "' for the plugin '" + instance.name + "'");
@@ -326,8 +344,8 @@
         return instance;
     };
     plug.private.instance.applyOpts = function(instance) {
-        if (typeof instance.opts != "undefined") {
-            if (typeof instance.opts.opts != "undefined") {
+        if ("undefined" !== typeof instance.opts) {
+            if ("undefined" !== typeof instance.opts.opts) {
                 instance.opts = plug.private.helpers.transfer(instance.opts, instance.opts.opts);
                 delete instance.opts.opts;
             }
@@ -366,33 +384,32 @@
         plug.private.event.assign(plug.event.list, path, {}, 0);
     };
     plug.private.event.getPath = function(name) {
-        var namespaces = name.split(".");
-        return namespaces;
+        return name.split(".");
     };
     plug.private.event.assign = function(events, path, instance, count, remove) {
-        if (typeof events[path[count]] != "object") {
+        if ("object" !== typeof events[path[count]]) {
             events[path[count]] = [];
         }
-        if (path[count + 1] != undefined) {
+        if ("undefined" !== typeof path[count + 1]) {
             plug.private.event.assign(events[path[count]], path, instance, count + 1, remove);
         } else {
             if (remove) {
                 delete events[path[count]];
             } else {
-                if (typeof instance == "function") {
+                if ("function" === typeof instance) {
                     events[path[count]].push(instance);
                 }
             }
         }
     };
     plug.private.event.flatten = function(listeners, list) {
-        if (typeof list == "undefined") list = [];
+        if ("undefined" === typeof list) list = [];
         for (var instance in listeners) {
             if (listeners.hasOwnProperty(instance)) {
-                if (typeof listeners[instance] == "function") {
+                if ("function" === typeof listeners[instance]) {
                     list.push(listeners[instance]);
                 }
-                if (typeof listeners[instance] == "object") {
+                if ("object" === typeof listeners[instance]) {
                     plug.private.event.flatten(listeners[instance], list);
                 }
             }
@@ -505,10 +522,12 @@
                     value = true;
                 } else if (value === "false") {
                     value = false;
-                } else if (/\,/.test(value)) {
+                } else if (value[0] === "{" && value[value.length - 1] === "}" || value[0] === "[" && value[1] === "{" && value[value.length - 2] === "}" && value[value.length - 1] === "]") {
+                    value = plug.private.helpers.parseJson(value);
+                } else if (/,/.test(value)) {
                     if (value[0] == "[") {
-                        value = value.replace("/^[/", "");
-                        value = value.replace("/]$/", "");
+                        value = value.replace(/^\[/g, "");
+                        value = value.replace(/\]$/g, "");
                         value = value.split(",");
                     }
                 } else if (!/\[|\]/.test(value) && !/[a-zA-Z]/.test(value) && /[0-9]/.test(value)) {
@@ -517,8 +536,6 @@
                     } else {
                         value = parseInt(value);
                     }
-                } else if (value[0] === "{" && value[value.length - 1] === "}") {
-                    value = plug.private.helpers.parseJson(value);
                 }
             }
         }
