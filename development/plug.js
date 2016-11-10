@@ -452,23 +452,24 @@
         if ("undefined" === typeof instance.el.dataset) {
             instance.el.dataset = {};
             var attributes = instance.el.attributes;
-            var i = attributes.length;
-            for (; i--;) {
-                if (/^data-.*/.test(attributes[i].name)) {
-                    var dataAttribute = attributes[i];
-                    var attrName = dataAttribute.name.replace("data-", "");
+            if ("undefined" !== typeof attributes) {
+                var i = attributes.length;
+                for (; i--;) {
+                    if (/^data-.*/.test(attributes[i].name)) {
+                        var dataAttribute = attributes[i];
+                        var attrName = dataAttribute.name.replace("data-", "");
 
-                    function toUpper(match) {
-                        return match.toUpperCase().substring(1);
+                        function toUpper(match) {
+                            return match.toUpperCase().substring(1);
+                        }
+
+                        attrName = attrName.replace(/-(.)/, toUpper);
+                        instance.el.dataset[attrName] = dataAttribute.value;
                     }
-
-                    attrName = attrName.replace(/-(.)/, toUpper);
-                    instance.el.dataset[attrName] = dataAttribute.value;
                 }
             }
-
-            var data = instance.el.dataset;
         }
+        var data = instance.el.dataset;
 
 
         if (data) {
